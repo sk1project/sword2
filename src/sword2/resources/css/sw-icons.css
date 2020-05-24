@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'sword ui';
+    src: url('../fonts/sword-ui.eot');
+    src: url('../fonts/sword-ui.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/sword-ui.woff') format('woff'),
+    url('../fonts/sword-ui.ttf') format('truetype'),
+    url('../fonts/sword-ui.svg#sword-ui') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.i64, .i48, .i32, .i24, .i22, .i16 {
+    display: inline-block;
+    color: black;
+}
+
+.i64 {font-size: 64px; !important;}
+.i48 {font-size: 48px; !important;}
+.i32 {font-size: 32px; !important;}
+.i24 {font-size: 24px; !important;}
+.i22 {font-size: 22px; !important;}
+.i16 {font-size: 16px; !important;}
+
+.sw {
+    display: inline-block;
+    font-weight: normal;
+    font-variant: normal;
+    font-style: normal;
+    font-family: 'sword ui', sans-serif;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none;
+}
+
+
+.sw-copy:before {content: "A";}
+.sw-list:before {content: "B";}
+.sw-edit:before {content: "C";}
+.sw-prefs:before {content: "D";}
+.sw-exit:before {content: "E";}
+.sw-backward:before {content: "F";}
+.sw-forward:before {content: "G";}
+.sw-up:before {content: "H";}
+.sw-home:before {content: "I";}
+.sw-refresh:before {content: "J";}
+.sw-collapse:before {content: "K";}
+.sw-expand:before {content: "L";}
+.sw-switch:before {content: "M";}
+.sw-json:before {content: "N";}
+.sw-delete:before {content: "O";}
+.sw-warn:before {content: "P";}
+.sw-close:before {content: "Q";}
+.sw-exclam:before {content: "R";}
+.sw-info:before {content: "S";}
+.sw-quest:before {content: "T";}
+.sw-search:before {content: "U";}
+.sw-minus:before {content: "V";}
+.sw-plus:before {content: "W";}
+.sw-htri:before {content: "X";}
+.sw-vtri:before {content: "Y";}
+.sw-folder:before {content: "Z";}
+.sw-open:before {content: "a";}
+.sw-doc:before {content: "b";}
+.sw-file:before {content: "c";}
+.sw-image:before {content: "d";}

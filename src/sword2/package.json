@@ -1,0 +1,10 @@
+{
+  "name": "sword2",
+  "main": "index.html",
+  "window": {
+    "min_width": 1500,
+    "min_height": 800,
+    "icon": "resources/images/favicon-64.png",
+    "position": "center"
+  }
+}

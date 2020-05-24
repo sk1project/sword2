@@ -1,0 +1,607 @@
+:root {
+    --stub-bg: #333;
+    --app-bg: #313335;
+    --app-panel-bg: #3c3f41;
+    --app-fg: #8c8c8c;
+    --app-toolbar-bg: black;
+    --app-header-bg: #313335;
+    --app-panel-border: #4b4b4b 1px solid;
+    --app-selection-bg: #fc5e55;
+    --app-tab-selected: var(--app-selection-bg) 2px solid;
+    --app-selection-fg: #fff;
+    --app-scrollbar-track: rgba(0, 0, 0, 0);
+    --app-scrollbar-thumb: #c1c1c1;
+    --ws-tree-bg: #fff;
+    --ws-column-header-fg: #000;
+    --ws-column-header-bg: #999 linear-gradient(#999, #555);
+    --ws-hexview-bg: #2b2b2b;
+    --ws-hexview-fg: #7a7a7a;
+    --ws-hexview-border: #373737 1px solid;
+    --ws-binview-bg: #313335;
+    --ws-binview-fg: #5c6165;
+    --ws-binview-border: #555555 1px solid;
+    --ws-hv-ascii-fg: #de922e;
+    --ws-hv-bivalue-fg: #fff;
+    --plugin-header-bg: #313335;
+    --plugin-header-fg: #fff;
+    --plugin-header-font: bold normal 20px 'Ubuntu', sans-serif;
+    --fb-view-bg: #fff;
+    --button-fg: var(--app-fg);
+    --button-hover-bg: #5c6165;
+    --button-hover-fg: var(--app-selection-fg);
+    --button-active-bg: #5c6165;
+    --button-active-fg: var(--app-selection-bg);
+    --button-disabled-fg: #5c605f;
+    --vline-fg: #555;
+    --vline-width: 2px;
+    --toolbar-button-fg: #fff;
+    --toolbar-button-bg: var(--app-toolbar-bg);
+    --toolbar-button-hover-fg: #fff;
+    --toolbar-button-hover-bg: var(--ws-hexview-bg);
+    --toolbar-button-pressed-bg: var(--ws-hexview-bg);
+    --toolbar-button-pressed-fg: var(--app-selection-bg);
+    --toolbar-button-disabled-fg: var(--button-disabled-fg);
+    --toolbar-button-disabled-bg: var(--app-toolbar-bg);
+    --row-height: 36px;
+    --icon-size: 22px;
+    --row-alt-bg: #dae3f5;
+}
+
+html, body {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16px;
+    height: 100vh;
+    width: 100vw;
+    background: var(--app-bg);
+    color: var(--app-fg);
+}
+
+body {
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+td {
+    padding: 0;
+}
+
+pre {
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 22px;
+    line-height: 1.2;
+    padding: 5px;
+    margin: 0;
+}
+
+/*-----COLORS------*/
+.black {color: #000;}
+.gray {color: #92a6a6;}
+.white {color: #fff;}
+.yellow {color: #f0d000;}
+.orange {color: #ffa500;}
+.red {color: #e74c3c;}
+.blue {color: #3498db;}
+.green {color: #27ae60;}
+.magenta {color: #f06292;}
+.violet {color: #9b59b6;}
+.stripped-color {color: #ffebcd;}
+
+.selected {
+    background: var(--app-selection-bg) !important;;
+    color: var(--app-selection-fg) !important;
+    border-color: var(--app-selection-fg) !important;
+}
+
+.stripped {
+    background: var(--row-alt-bg) url("data:image/svg+xml;utf8,<?xml version='1.0'?><svg xmlns='http://www.w3.org/2000/svg' height='36.0px' width='1.0px' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink'><path fill='white' d='M 0.0,18.0 L 0.0,0.0 1.0,0.0 1.0,18.0 0.0,18.0 Z' /></svg>") left top repeat;
+    background-size: auto calc(2 * var(--row-height));
+}
+
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: initial;
+    position: absolute;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--app-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--app-scrollbar-thumb);
+    border-radius: 4px;
+}
+
+/* SELECTION */
+::-moz-selection {
+    color: var(--app-selection-fg);
+    background: var(--app-selection-bg);
+}
+
+::selection {
+    color: var(--app-selection-fg);
+    background: var(--app-selection-bg);
+}
+
+/*------------------SPLASH------------------*/
+
+#startup {
+    display: block;
+    height: 100vh;
+    background: var(--stub-bg) url('../images/startup.gif') no-repeat center center;
+    text-align: center;
+}
+
+#startup-text {
+    line-height: calc(100vh - 290px);
+    font-size: 48px;
+    font-weight: bold;
+}
+
+#overlay {
+    position: absolute;
+}
+
+#app, #overlay {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+/*------------------APPLICATION------------------*/
+
+#app {
+    background: var(--app-bg);
+}
+
+#app-table {
+    width: 100vw;
+    height: 100vh;
+}
+
+/*-----TOOLBAR-----*/
+
+.app-toolbar-button {
+    display: block;
+    color: var(--toolbar-button-fg);
+    background: var(--toolbar-button-bg);
+    padding: 16px;
+    border-radius: 32px;
+    margin: 5px 8px;
+}
+
+.app-toolbar-button:hover {
+    background-color: var(--toolbar-button-hover-bg);
+    color: var(--toolbar-button-hover-fg);
+}
+
+.app-toolbar-button:active {
+    background-color: var(--toolbar-button-pressed-bg);
+    color: var(--toolbar-button-pressed-fg);
+    padding: 14px;
+    border: var(--ws-binview-border);
+    border-width: 2px;
+}
+
+.app-toolbar-button-disabled {
+    display: block;
+    padding: 16px;
+    border-radius: 32px;
+    color: var(--toolbar-button-disabled-fg);
+    background: var(--toolbar-button-disabled-bg);
+    margin: 5px 8px;
+}
+
+.app-toolbar-button-pressed {
+    display: block;
+    padding: 14px;
+    border-radius: 32px;
+    background-color: var(--toolbar-button-pressed-bg);
+    color: var(--toolbar-button-pressed-fg);
+    margin: 5px 8px;
+    border: var(--ws-binview-border);
+    border-width: 2px;
+}
+
+/*----------*/
+
+#app-td-toolbar {
+    width: 80px;
+    max-width: 80px;
+    background: var(--app-toolbar-bg);
+    padding: 0;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+#toolbar-logo-expander {
+    text-align: center;
+    height: calc(100vh - 100px);
+    width: 80px
+}
+
+#toolbar-logo {
+    transform: rotate(-90deg);
+    color: #7a7a7a;
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+
+}
+
+#app-td-workspace {
+    width: auto;
+}
+
+#app-td-plugin-area {
+    width: 500px;
+    min-width: 400px;
+    border-left: var(--app-panel-border);
+}
+
+/*------------------WORKSPACE------------------*/
+
+#ws-table {
+    /*display: none;*/
+    width: 100%;
+    height: 100vh;
+}
+
+/*------TABS------*/
+
+#ws-td-tabs {
+    height: 40px;
+    min-height: 40px;
+    background: var(--app-header-bg);
+    border-bottom: var(--app-panel-border);
+}
+
+#ws-tabs-div {
+    height: 40px;
+    padding-left: 15px;
+}
+
+i.tab-button {
+    margin-right: 10px;
+    line-height: 30px;
+    vertical-align: middle;
+    margin-top: -1px;
+}
+
+i.tab-button:hover {
+    color: var(--toolbar-button-hover-fg)
+}
+
+i.tab-button:active {
+    color: var(--toolbar-button-pressed-fg)
+}
+
+a.tab {
+    display: inline-block;
+    border-left: var(--app-panel-border);
+    border-top: var(--app-panel-border);
+    border-right: var(--app-panel-border);
+    text-decoration: none;
+    color: var(--app-fg);
+    line-height: 30px;
+    margin-top: 5px;
+    padding: 0 25px 0 10px;
+    margin-left: -1px;
+}
+
+a.tab-selected {
+    border-top: var(--app-tab-selected);
+    background: var(--app-panel-bg);
+    line-height: 34px;
+}
+
+/*-----*/
+
+#ws-td-toolbar {
+    background: var(--app-panel-bg);
+    height: 40px;
+    min-height: 40px;
+    border-bottom: var(--app-panel-border);
+}
+
+/*----Tree-----*/
+
+#ws-td-tree-header, #ws-td-hexview-header {
+    height: 30px;
+    min-height: 30px;
+    background: var(--ws-column-header-bg);
+    color: var(--ws-column-header-fg);
+}
+
+#ws-td-tree-header {
+    border-right: #4b4b4b 1px solid;
+    padding-left: 5px;
+    width: 380px;
+    min-width: 300px;
+}
+
+#ws-td-tree {
+    background: var(--ws-tree-bg);
+}
+
+/*----Hex viewer-----*/
+
+#ws-td-hexview {
+    background: var(--ws-hexview-bg);
+}
+
+.div-scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#ws-td-binview {
+    height: 30px;
+    color: var(--ws-binview-fg);
+    background: var(--ws-binview-bg);
+    border-top: var(--ws-binview-border);
+    padding-left: 45px;
+}
+
+#hv-table {
+    width: 100%;
+    min-height: 100%;
+}
+
+#hv-td-nums {
+    width: 108px;
+    color: var(--ws-binview-fg);
+    background: var(--ws-binview-bg);
+    border-right: var(--ws-binview-border);
+    vertical-align: top;
+}
+
+#hv-td-hex {
+    width: 395px;
+    color: var(--ws-hexview-fg);
+    border-right: var(--ws-hexview-border);
+    vertical-align: top;
+    user-select: text;
+}
+
+#hv-td-ascii {
+    width: 185px;
+    color: var(--ws-hv-ascii-fg);
+    border-right: var(--ws-hexview-border);
+    vertical-align: top;
+}
+
+#hv-bin-value {
+    color: var(--ws-hv-bivalue-fg);
+    margin-left: 5px;
+    font-family: 'Ubuntu Mono', monospace;
+    font-size: 20px;
+}
+
+/*------------------PLUGINS------------------*/
+
+#fb-table {
+    height: 100%;
+}
+
+.plugin-header {
+    height: 30px;
+    background: var(--app-bg);
+    border-bottom: var(--app-panel-border);
+    color: var(--plugin-header-fg);
+    text-align: center;
+    font: var(--plugin-header-font);
+    padding: 5px;
+}
+
+.plugin-panel {
+    background: var(--app-panel-bg);
+    color: var(--app-fg);
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    min-height: 40px;
+    border-bottom: var(--app-panel-border);
+}
+
+#fb-td-view-header {
+    height: 30px;
+    min-height: 30px;
+    background: var(--ws-column-header-bg);
+    color: var(--ws-column-header-fg);
+    padding-left: 5px;
+    user-select: text;
+}
+
+#fb-td-view {
+    width: 100%;
+    height: 100%;
+    background: var(--fb-view-bg);
+}
+
+/*------------------WIDGETS------------------*/
+
+/*-----Button-----*/
+.button {
+    color: var(--button-fg);
+    padding: 6px;
+    border-radius: 18px;
+    margin: 2px 5px 2px 5px;
+}
+
+.button:hover {
+    color: var(--button-hover-fg);
+    background: var(--button-hover-bg);
+}
+
+.button:active, .button-pressed {
+    background: var(--button-active-bg);
+    color: var(--app-selection-bg);
+}
+
+.button-disabled {
+    color: var(--button-disabled-fg);
+    padding: 6px;
+    border-radius: 18px;
+    margin: 2px 5px 2px 5px;
+}
+
+/*--------*/
+
+div.vline {
+    display: inline-block;
+    background: var(--vline-fg);
+    width: 2px;
+    height: 24px;
+}
+
+/*-----TREE-----*/
+div.tree-root {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+div.tree-group {
+    margin: 0;
+    padding: 0 0 0 24px;
+    width: auto;
+}
+
+div.tree-node, div.tree-leaf {
+    margin: 0;
+    line-height: var(--row-height);
+    vertical-align: middle;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+}
+
+div.tree-node i {
+    width: 24px;
+    line-height: var(--row-height);
+    font-size: 10px;
+    vertical-align: top;
+    text-align: center;
+}
+
+div.tree-node span.tree-node-text, div.tree-leaf span.tree-node-text {
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    color: black;
+    vertical-align: top;
+    line-height: var(--row-height);
+}
+
+div.tree-node span i, div.tree-leaf span i {
+    width: 28px;
+    font-size: 22px;
+    vertical-align: top;
+    line-height: var(--row-height);
+    text-align: center;
+}
+
+div.tree-row-bg {
+    height: var(--row-height);
+    white-space: nowrap;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    cursor: pointer;
+}
+
+div.tree-info {
+    float: right;
+    width: 65px;
+    border-left: #92a6a6 1px solid;
+    line-height: var(--row-height);
+    font-size: 16px;
+    padding-left: 5px;
+    vertical-align: top;
+}
+
+span.tree-marker {
+    font-size: 14px;
+    vertical-align: top;
+}
+
+div.tree-leaf-ocl {
+    display: inline-block;
+    width: 24px;
+    line-height: var(--row-height);
+    font-size: 10px;
+    vertical-align: top;
+}
+
+#right-splitter, #left-splitter {
+    height: 100%;
+    width: 5px;
+    position: absolute;
+    background: none;
+    cursor: col-resize;
+    z-index: 999;
+}
+
+#left-splitter {
+    height: calc(100% - 100px);
+}
+
+/*---------------FILE TABLE-----------------*/
+
+#fl-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#fl-table td {
+    padding: 6px;
+    cursor: pointer !important;
+    user-select: none;
+}
+
+#fl-table td i {
+    font-size: 22px;
+}
+
+#fl-table td.filename {
+    color: black;
+    width: 100%;
+}
+
+#fl-table td.filesize {
+    color: gray;
+    border-left: #ccc 1px solid;
+    white-space: nowrap;
+}
+
+#fl-table tr {
+    background: #b8d1f3;
+}
+
+#fl-table tr.selected, #fl-table tr.selected td, #fl-table tr.selected td i {
+    color: #fff !important;
+    background: #fc5e55 !important;
+}
+
+#fl-table tr:nth-child(odd) {
+    background: #fff;
+}
+
+#fl-table tr:nth-child(even) {
+    background: #dae5f4;
+}
