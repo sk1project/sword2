@@ -26,12 +26,12 @@
         <tr>
             <td id="app-td-toolbar">
                 <div id="toolbar-logo-expander">
-                    <i id="tb-files-button" class="sw sw-open i32 app-toolbar-button-pressed"></i>
+                    <i id="tb-files-button" class="sw sw-dir i32 app-toolbar-button-pressed"></i>
                     <i id="tb-convert-button" class="sw sw-list i32 app-toolbar-button"></i>
                     <i id="tb-log-button" class="sw sw-edit i32 app-toolbar-button"></i>
                     <i id="tb-prefs-button" class="sw sw-prefs i32 app-toolbar-button-disabled"></i>
                     <i id="tb-exit-button" class="sw sw-exit i32 app-toolbar-button"
-                       onclick="app.reload()"></i>
+                       onclick="app.exit()"></i>
                 </div>
                 <br>
                 <div>
@@ -63,7 +63,7 @@
                             <div class="vline"></div>
                             <i id="ws-switch-button" class="sw sw-switch i24 button"></i>
                             <div class="vline"></div>
-                            <i id="ws-close-button" class="sw sw-close i24 button"></i>
+                            <i id="ws-close-button" class="sw sw-close-doc i24 button"></i>
 
                         </td>
                     </tr>
@@ -116,23 +116,23 @@ f90c4444 444c8000 4af9eb00 4af9</pre>
                     <tr>
                         <td id="fb-td-panel" class="plugin-panel">
 
-                            <i id="fb-backward-button" class="sw sw-backward i24 button"></i>
-                            <i id="fb-forward-button" class="sw sw-forward i24 button"></i>
-                            <i id="fb-up-button" class="sw sw-up i24 button" onclick="app.fileList.goUp()"></i>
+                            <i id="fb-backward-button"></i>
+                            <i id="fb-forward-button"></i>
+                            <i id="fb-up-button"></i>
                             <div class="vline"></div>
-                            <i id="fb-home-button" class="sw sw-home i24 button" onclick="app.fileList.setPath()"></i>
-                            <i id="fb-refresh-button" class="sw sw-refresh i24 button" onclick="app.fileList.refresh()"></i>
+                            <i id="fb-home-button"></i>
+                            <i id="fb-refresh-button"></i>
                             <div class="vline"></div>
-                            <i id="fb-delete-button" class="sw sw-delete i24 button"></i>
+                            <i id="fb-delete-button"></i>
 
                         </td>
                     </tr>
                     <tr>
-                        <td id="fb-td-view-header">~/FORMATS/cmx/</td>
+                        <td id="fb-td-view-header"><!--FILE LIST CURRENT DIR--></td>
                     </tr>
                     <tr>
                         <td id="fb-td-view">
-                            <!--FILE BROWSER WIDGET-->
+                            <!--FILE LIST WIDGET-->
                         </td>
                     </tr>
                 </table>

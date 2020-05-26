@@ -14,3 +14,77 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+const os = require('os');
+const fs = require('fs');
+const path = require('path');
+
+
+const HOME = os.homedir();
+
+
+function formatFileSize(bytes, decimals = 2) {
+    if (bytes === 0) return '0 bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['bytes', 'kb', 'Mb', 'Gb'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function parentDir(dir) {
+    return path.dirname(dir);
+}
+
+function isRoot(dir) {
+    return parentDir(dir) === dir;
+}
+
+function isHome(dir) {
+    return dir === HOME;
+}
+
+function isParentHome(dir) {
+    return isHome(parentDir(dir));
+}
+
+function deleteFile(filePath) {
+    fs.unlinkSync(filePath);
+}
+
+function fileExt(filePath) {
+    return path.extname(filePath);
+}
+
+
+function scanDir(dir = HOME) {
+    dir = dir || HOME;
+    dir = dir.startsWith('~') ? dir.replace('~', HOME) : dir;
+    let dirs = isRoot(dir) ? [] : [{name:'..', path:path.dirname(dir), size: null}];
+    let files = [];
+    fs.readdirSync(dir, 'utf-8').filter((name) => !name.startsWith('.')).map((name) => {
+        const itemPath = path.join(dir, name),
+            stats = function (itemPath) {
+                try {
+                    let fInfo = fs.statSync(itemPath);
+                    return fInfo.isDirectory() ? null : formatFileSize(fInfo['size']);
+                } catch (e) {
+                    return null;
+                }
+            }(itemPath);
+        let info = {name:name, path:itemPath, size: stats};
+        stats ? files.push(info) : dirs.push(info);
+    });
+    return dirs.concat(files);
+}
+
+exports.formatFileSize = formatFileSize;
+exports.parentDir = parentDir;
+exports.isRoot = isRoot;
+exports.isHome = isHome;
+exports.isParentHome = isParentHome;
+exports.deleteFile = deleteFile;
+exports.fileExt = fileExt;
+exports.scanDir = scanDir;

@@ -35,7 +35,7 @@
 }
 
 
-.sw-copy:before {content: "A";}
+.sw-dir:before {content: "A";}
 .sw-list:before {content: "B";}
 .sw-edit:before {content: "C";}
 .sw-prefs:before {content: "D";}
@@ -48,7 +48,7 @@
 .sw-collapse:before {content: "K";}
 .sw-expand:before {content: "L";}
 .sw-switch:before {content: "M";}
-.sw-json:before {content: "N";}
+.sw-close-doc:before {content: "N";}
 .sw-delete:before {content: "O";}
 .sw-warn:before {content: "P";}
 .sw-close:before {content: "Q";}
@@ -65,3 +65,5 @@
 .sw-doc:before {content: "b";}
 .sw-file:before {content: "c";}
 .sw-image:before {content: "d";}
+
+.sw-file-unsupported:before {content: "j";}

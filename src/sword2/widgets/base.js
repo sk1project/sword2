@@ -20,7 +20,7 @@ let document = null;
 let window = null;
 let console = null;
 
-function init(doc, win, con) {
+function initBase(doc, win, con) {
     document = doc;
     window = win;
     console = con;
@@ -31,8 +31,8 @@ class HtmlElement extends OptObject {
         display: 'block',
     }
     constructor(id, opt={}) {
-        super(opt= {...HtmlElement.defaultOptions, ...opt});
-        this.console = console;
+        super({...HtmlElement.defaultOptions, ...opt});
+        this.log = console.log;
         this.document = document;
         this.window = window;
         this.id = id;
@@ -74,10 +74,10 @@ class Component extends HtmlElement  {
     static defaultOptions = {}
 
     constructor(id, opt={}) {
-        super(id, opt= {...Component.defaultOptions, ...opt});
+        super(id, {...Component.defaultOptions, ...opt});
     }
 }
 
-exports.init = init;
+exports.initBase = initBase;
 exports.el = el;
 exports.HtmlElement = HtmlElement;

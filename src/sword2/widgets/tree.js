@@ -17,13 +17,13 @@
 
 const {HtmlElement, el} = require('./base.js');
 
-class Tree extends HtmlElement {
+class wTree extends HtmlElement {
     static defaultOptions = {
         callbackPrefix: 'app.tree'
     }
 
     constructor(id, opt = {}) {
-        super(id, {...Tree.defaultOptions, ...opt});
+        super(id, {...wTree.defaultOptions, ...opt});
         this.model = {};
         this.html = '';
         this.selected = null;
@@ -45,7 +45,7 @@ class Tree extends HtmlElement {
         this.clear();
         this.render();
         this.collapseAll();
-        Tree.expand(this.root);
+        wTree.expand(this.root);
         this.selectRoot();
     }
 
@@ -65,13 +65,13 @@ class Tree extends HtmlElement {
 
     expandAll() {
         this.nodes.forEach(function (item) {
-            Tree.expand(item);
+            wTree.expand(item);
         }, this)
     }
 
     collapseAll() {
         this.nodes.forEach(function (item) {
-            Tree.collapse(item);
+            wTree.collapse(item);
         }, this)
     }
 
@@ -159,4 +159,4 @@ class Tree extends HtmlElement {
     }
 }
 
-exports.Tree = Tree;
+exports.wTree = wTree;

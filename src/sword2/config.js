@@ -25,8 +25,13 @@ const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
 // TODO: portable version
 
-config = {
-    current_path: HOME,
+let config = {
+    HOME: HOME,
+    currentDir: HOME,
+    winMinWidth: 1500,
+    winMinHeight: 800,
+    fileTypes: ['.sk2', '.sk1', '.sk', '.svg', '.svgz', '.cgm', '.xar', '.cdr', '.cmx', '.cdt', '.ccx', '.fig', '.plt',
+        '.wmf', '.dst', '.edr', '.pes', '.skp', '.aco', '.ase', '.xml', '.cpl', '.gpl', '.jcw', '.soc'],
 
     save: function () {
         !fs.existsSync(CONFIG_DIR) ? fs.mkdirSync(CONFIG_DIR, {recursive: true}) : null;
@@ -36,7 +41,7 @@ config = {
         if (!fs.existsSync(CONFIG_FILE)) {
             this.save();
         } else {
-            Object.assign(this, JSON.parse(fs.readFileSync(CONFIG_FILE)));
+            Object.assign(this, JSON.parse(fs.readFileSync(CONFIG_FILE).toString('utf-8')));
         }
     }
 };

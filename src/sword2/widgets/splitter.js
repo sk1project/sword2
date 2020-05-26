@@ -18,14 +18,14 @@
 const {HtmlElement, el} = require('./base.js');
 
 
-class VSplitter extends HtmlElement {
+class wVSplitter extends HtmlElement {
     static defaultOptions = {
         leftTargetId: '',
         rightTargetId: '',
     }
 
     constructor(id, opt = {}) {
-        super(id, {...VSplitter.defaultOptions, ...opt});
+        super(id, {...wVSplitter.defaultOptions, ...opt});
         this.left_target = el(this.opt.leftTargetId);
         this.right_target = el(this.opt.rightTargetId);
         this.el.onmousedown = this.onMouseDown.bind(this);
@@ -64,4 +64,4 @@ class VSplitter extends HtmlElement {
 }
 
 
-exports.VSplitter = VSplitter;
+exports.wVSplitter = wVSplitter;
