@@ -1,10 +1,10 @@
 @font-face {
-    font-family: 'sword ui';
-    src: url('../fonts/sword-ui.eot');
-    src: url('../fonts/sword-ui.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/sword-ui.woff') format('woff'),
-    url('../fonts/sword-ui.ttf') format('truetype'),
-    url('../fonts/sword-ui.svg#sword-ui') format('svg');
+    font-family: 'sw-icons';
+    src: url('../fonts/sw-icons.eot');
+    src: url('../fonts/sw-icons.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/sw-icons.woff') format('woff'),
+    url('../fonts/sw-icons.ttf') format('truetype'),
+    url('../fonts/sw-icons.svg#sw-icons') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -26,7 +26,7 @@
     font-weight: normal;
     font-variant: normal;
     font-style: normal;
-    font-family: 'sword ui', sans-serif;
+    font-family: 'sw-icons', sans-serif;
     line-height: 1;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;

@@ -68,7 +68,7 @@ class HtmlElement extends OptObject {
     }
 }
 
-const el = (id) => document.getElementById(id) ? new HtmlElement(id): null;
+const el = (id, opt={}) => document.getElementById(id) ? new HtmlElement(id, opt): null;
 
 class Component extends HtmlElement  {
     static defaultOptions = {}

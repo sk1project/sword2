@@ -22,9 +22,9 @@ const {wButton} = require("../widgets/button.js");
 const {config} = require('../config.js');
 
 class FileBrowserPlugin extends HtmlElement {
-    constructor(app, parentId = 'app-td-plugin-area', id = 'fb-table') {
+    constructor(app, id = 'fb-table') {
         super(id);
-        this.app = app
+        this.app = app;
         this.backward = [];
         this.forward = [];
         this.selectedItem = null;
@@ -105,7 +105,7 @@ class FileBrowserPlugin extends HtmlElement {
             this.currentDir = config.currentDir = item.path;
             this.forward = [];
         } else {
-            this.app.open_doc(item.path);
+            this.app.openDoc(item.path);
         }
         this.updateCtrls();
     }
@@ -125,6 +125,10 @@ class FileBrowserPlugin extends HtmlElement {
         this.backwardBtn.setEnabled(this.backward.length !== 0);
         this.forwardBtn.setEnabled(this.forward.length !== 0);
         this.refreshBtn.enable();
+    }
+
+    static render() {
+        return require('../view/file-browser.view.js').view;
     }
 }
 

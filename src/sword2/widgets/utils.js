@@ -58,10 +58,21 @@ function fileExt(filePath) {
     return path.extname(filePath);
 }
 
+function readFile(filePath) {
+    return fs.readFileSync(filePath).toString('utf-8');
+}
+
+function expandUser(filePath) {
+    return filePath.startsWith('~') ? filePath.replace('~', HOME) : filePath;
+}
+
+function fileName(filePath) {
+    return path.basename(filePath);
+}
+
 
 function scanDir(dir = HOME) {
-    dir = dir || HOME;
-    dir = dir.startsWith('~') ? dir.replace('~', HOME) : dir;
+    dir = expandUser(dir || HOME);
     let dirs = isRoot(dir) ? [] : [{name:'..', path:path.dirname(dir), size: null}];
     let files = [];
     fs.readdirSync(dir, 'utf-8').filter((name) => !name.startsWith('.')).map((name) => {
@@ -87,4 +98,7 @@ exports.isHome = isHome;
 exports.isParentHome = isParentHome;
 exports.deleteFile = deleteFile;
 exports.fileExt = fileExt;
+exports.readFile = readFile;
+exports.expandUser = expandUser;
+exports.fileName = fileName;
 exports.scanDir = scanDir;

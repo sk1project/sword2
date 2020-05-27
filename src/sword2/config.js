@@ -25,25 +25,25 @@ const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
 // TODO: portable version
 
-let config = {
+const staticConfig = {
     HOME: HOME,
+    fileTypes: ['.sk2', '.sk1', '.sk', '.svg', '.svgz', '.cgm', '.xar', '.cdr', '.cmx', '.cdt', '.ccx', '.fig', '.plt',
+        '.wmf', '.dst', '.edr', '.pes', '.skp', '.aco', '.ase', '.xml', '.cpl', '.gpl', '.jcw', '.soc'],
+}
+
+let mutableConfig = {
     currentDir: HOME,
     winMinWidth: 1500,
     winMinHeight: 800,
-    fileTypes: ['.sk2', '.sk1', '.sk', '.svg', '.svgz', '.cgm', '.xar', '.cdr', '.cmx', '.cdt', '.ccx', '.fig', '.plt',
-        '.wmf', '.dst', '.edr', '.pes', '.skp', '.aco', '.ase', '.xml', '.cpl', '.gpl', '.jcw', '.soc'],
 
     save: function () {
         !fs.existsSync(CONFIG_DIR) ? fs.mkdirSync(CONFIG_DIR, {recursive: true}) : null;
         fs.writeFileSync(CONFIG_FILE, JSON.stringify(this));
     },
     load: function () {
-        if (!fs.existsSync(CONFIG_FILE)) {
-            this.save();
-        } else {
-            Object.assign(this, JSON.parse(fs.readFileSync(CONFIG_FILE).toString('utf-8')));
-        }
+        if (!fs.existsSync(CONFIG_FILE)) this.save();
+        Object.assign(this, JSON.parse(fs.readFileSync(CONFIG_FILE).toString('utf-8')), staticConfig);
     }
 };
 
-exports.config = config;
+exports.config = mutableConfig;
