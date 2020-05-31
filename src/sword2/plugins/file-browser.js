@@ -117,7 +117,7 @@ class FileBrowserPlugin extends HtmlElement {
 
     updateCtrls() {
         let caption = this.currentDir.startsWith(config.HOME) ?
-            this.currentDir.replace(config.HOME, '~'): this.currentDir;
+            this.currentDir.replace(config.HOME + '/', '~/'): this.currentDir;
         this.fbHeader.setHtml(`<div class="truncater">${caption}</div>`);
         this.deletehBtn.setEnabled(this.selectedItem ? this.selectedItem.isFile : false);
         this.homeBtn.setEnabled(!isHome(this.view.currentDir));

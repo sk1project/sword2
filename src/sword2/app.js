@@ -53,7 +53,7 @@ class SWord2App extends HtmlElement {
         this.render();
         this.ws = new pWorkSpace(this, 'ws-table', {display: 'table'});
         this.fbPlugin = new FileBrowserPlugin(this);
-        this.right_splitter = new wVSplitter('right-splitter',
+        this.plugin_splitter = new wVSplitter('plugin-splitter',
             {leftTargetId: 'app-td-workspace', rightTargetId: 'app-td-plugin-area'});
     }
 
@@ -143,7 +143,7 @@ class SWord2App extends HtmlElement {
         this.setHtml(appView);
         el('app-td-workspace').setHtml(require('./view/ws.view.js').view);
         el('app-td-toolbar').setHtml(require('./view/toolbar.view.js').view);
-        el('app-td-plugin-area').setHtml(`<div id="right-splitter" class="splitter"></div>
+        el('app-td-plugin-area').setHtml(`<div id="plugin-splitter" class="splitter"></div>
             ${require('./view/file-browser.view.js').view}`);
     }
 }

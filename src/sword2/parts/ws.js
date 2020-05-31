@@ -26,8 +26,6 @@ class pWorkSpace extends HtmlElement {
         super(id, {...pWorkSpace.defaultOptions, ...opt});
         this.app = app;
         this.tabs = new pTabs(this.app, 'ws-tabs-div');
-        // this.left_splitter = new wVSplitter('left-splitter',
-        //     {leftTargetId: 'ws-td-tree-header', rightTargetId: 'ws-td-hexview-header'});
         events.connect(events.DOC_CHANGED, this.update.bind(this));
     }
 

@@ -16,6 +16,8 @@
  */
 
 const {HtmlElement, el} = require('./widgets/base.js');
+const {wVSplitter} = require('./widgets/splitter.js');
+const {wTree} = require('./widgets/tree.js');
 const uc2 = require('./uc2.js');
 
 class DocPresenter extends HtmlElement {
@@ -23,6 +25,7 @@ class DocPresenter extends HtmlElement {
         deferred: true,
         parent: 'doc-space',
         class_: 'doc-view',
+        display: 'table',
     }
 
     constructor(app, filePath, opt = {}) {
@@ -32,13 +35,22 @@ class DocPresenter extends HtmlElement {
         this.id = this.model.id;
         this.caption = this.model.fileName;
         this.render();
+        this.setTreeCaption(this.model.name);
+        this.left_splitter = new wVSplitter(`left-splitter-${this.id}`,
+            {leftTargetId: `ws-td-tree-header-${this.id}`, rightTargetId: `ws-td-hexview-header-${this.id}`});
+        this.tree = new wTree(`ws-td-tree-${this.id}`, {callbackPrefix: 'app.activeDoc.tree'});
+        this.tree.setModel(this.model);
+    }
+
+    setTreeCaption(txt) {
+        el(`ws-td-tree-header-${this.id}`).setHtml(txt);
     }
 
     render() {
-        this.el = this.document.createElement('div');
+        this.el = this.document.createElement('table');
         this.el.setAttribute('id', this.id);
         this.el.setAttribute('class', this.opt.class_);
-        this.el.innerHTML = `<big>${this.id}</big>`;
+        this.el.innerHTML = require('./view/doc.view').view(this.id);
         el(this.opt.parent).el.appendChild(this.el);
     }
 }

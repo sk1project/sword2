@@ -30,7 +30,7 @@
              <i id="fb-delete-button"></i>
          </td>
      </tr>
-     <tr><td id="fb-td-view-header"></td></tr>
+     <tr><td id="fb-td-view-header" class="view-header"></td></tr>
      <tr><td id="fb-td-view"></td></tr>
  </table>
 `;

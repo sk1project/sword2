@@ -76,7 +76,6 @@ class wTree extends HtmlElement {
     }
 
     render() {
-        el('ws-td-tree-header').setHtml(this.model['name']);
         if (this.model.hasOwnProperty('root')) {
             this.root = this.model['root']['id'];
             this.mapping = {};
@@ -111,6 +110,7 @@ class wTree extends HtmlElement {
 
         if (html.length > 0) {
             this.nodes.push(_id);
+            click_clbk += `ondblclick="${_p}.oclClicked('${obj['id']}')"`;
             let icon = `sw sw-${obj.hasOwnProperty('icon') ? obj['icon'] : 'folder'}`;
             icon = `${icon} ${obj.hasOwnProperty('icon-color') ? obj['icon-color'] : 'orange'}`;
             html = `<div id="tree-bg-${_id}" class="tree-row-bg" ${click_clbk}>&nbsp;</div>` +  // background

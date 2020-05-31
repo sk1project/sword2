@@ -118,8 +118,6 @@ pre {
     width: 8px;
     height: 8px;
     display: initial;
-    /*position: absolute;*/
-    z-index: 1000;
 }
 
 ::-webkit-scrollbar-track {
@@ -363,27 +361,24 @@ a.tab-selected i{
 
 /*----Tree-----*/
 
-#ws-td-tree-header, #ws-td-hexview-header {
-    height: 30px;
-    min-height: 30px;
-    background: var(--ws-column-header-bg);
-    color: var(--ws-column-header-fg);
-}
-
-#ws-td-tree-header {
+.ws-td-tree-header {
     border-right: #4b4b4b 1px solid;
     padding-left: 5px;
     width: 380px;
     min-width: 300px;
 }
 
-#ws-td-tree {
+.ws-td-tree {
     background: var(--ws-tree-bg);
+    height: 100%;
 }
 
 /*----Hex viewer-----*/
+.hexview-header {
+    padding-left: 0 !important;
+}
 
-#ws-td-hexview {
+.ws-td-hexview {
     background: var(--ws-hexview-bg);
 }
 
@@ -392,9 +387,10 @@ a.tab-selected i{
     overflow-y: auto;
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
-#ws-td-binview {
+.ws-td-binview {
     height: 30px;
     color: var(--ws-binview-fg);
     background: var(--ws-binview-bg);
@@ -430,7 +426,7 @@ a.tab-selected i{
     vertical-align: top;
 }
 
-#hv-bin-value {
+.hv-bin-value {
     color: var(--ws-hv-bivalue-fg);
     margin-left: 5px;
     font-family: 'Ubuntu Mono', monospace;
@@ -463,15 +459,15 @@ a.tab-selected i{
     border-bottom: var(--app-panel-border);
 }
 
-#fb-td-view-header {
-    height: 35px;
-    min-height: 35px;
-    background: var(--app-bg);
-    color: var(--app-fg);
-    padding-left: 5px;
-    user-select: text;
-    border-bottom: var(--app-panel-border);
-}
+.view-header {
+     height: 35px;
+     min-height: 35px;
+     background: var(--app-bg);
+     color: var(--app-fg);
+     padding-left: 5px;
+     user-select: text;
+     border-bottom: var(--app-panel-border);
+ }
 
 #fb-td-view {
     width: 100%;
@@ -594,7 +590,7 @@ div.tree-leaf-ocl {
     vertical-align: top;
 }
 
-#right-splitter, #left-splitter {
+.splitter {
     height: 100%;
     width: 5px;
     position: absolute;
@@ -603,7 +599,7 @@ div.tree-leaf-ocl {
     z-index: 999;
 }
 
-#left-splitter {
+.left-splitter {
     height: calc(100% - 100px);
 }
 

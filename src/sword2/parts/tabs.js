@@ -24,12 +24,15 @@ class pTabs extends HtmlElement {
     constructor(app, id, opt = {}) {
         super(id, {...pTabs.defaultOptions, ...opt});
         this.app = app;
+        this.width = null;
         events.connect(events.DOC_CHANGED, this.update.bind(this));
+        this.window.addEventListener("resize", this.update.bind(this));
     }
 
     update() {
+        this.setHtml();
         let html = '';
-        let maxSize = (this.getWidth() - 30) / (this.app.docs.length + 1);
+        let maxSize = (this.getWidth() - 30) / this.app.docs.length - 35;
         for (let i = 0; i < this.app.docs.length; i++) {
             let doc = this.app.docs[i];
             let suffix = doc.id === this.app.activeDoc.id ? ' tab-selected' : '';
@@ -40,6 +43,11 @@ class pTabs extends HtmlElement {
         }
         this.setHtml(html);
     }
+
+    // getWidth() {
+    //     this.width = this.width || super.getWidth();
+    //     return this.width;
+    // }
 }
 
 exports.pTabs = pTabs;
