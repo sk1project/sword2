@@ -15,15 +15,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const {pTabs} = require('./tabs');
 const {HtmlElement, el} = require('../widgets/base.js');
-const {wTree} = require("../widgets/tree.js");
+const events = require('../events.js');
 
-class wTreeView extends HtmlElement {
+class pWorkSpace extends HtmlElement {
     static defaultOptions = {}
 
-    constructor(app, id = 'ws-td-tree-header') {
-        super(id);
+    constructor(app, id, opt = {}) {
+        super(id, {...pWorkSpace.defaultOptions, ...opt});
         this.app = app;
-        this.tree = new wTree('ws-td-tree');
+        this.tabs = new pTabs(this.app, 'ws-tabs-div');
+        this.docSpace = el('doc-space');
+        // this.left_splitter = new wVSplitter('left-splitter',
+        //     {leftTargetId: 'ws-td-tree-header', rightTargetId: 'ws-td-hexview-header'});
+        events.connect(events.DOC_CHANGED, this.update.bind(this));
+    }
+
+    register(doc) {
+
+    }
+
+    unregister(doc) {
+
+    }
+
+    update() {
+        this.display(!!this.app.docs.length);
     }
 }
+
+exports.pWorkSpace = pWorkSpace;

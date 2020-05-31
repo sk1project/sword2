@@ -61,6 +61,10 @@ class wVSplitter extends HtmlElement {
         this.el.style.left = `${this.right_target.el.offsetLeft}px`;
     }
 
+    update() {
+        //Not implemented yet
+    }
+
 }
 
 

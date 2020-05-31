@@ -15,12 +15,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-class OptObject {
+const {HtmlElement, el} = require('../widgets/base.js');
+
+class pDocView extends HtmlElement {
     static defaultOptions = {}
 
-    constructor(opt = {}) {
-        this.opt = {...OptObject.defaultOptions, ...opt};
+    constructor(app, id, opt = {}) {
+        super(id, {...pDocView.defaultOptions, ...opt});
+        this.app = app;
     }
 }
-
-exports.OptObject = OptObject

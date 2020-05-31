@@ -18,18 +18,10 @@
 exports.view = `
 <table id="ws-table">
     <tr>
-        <td id="ws-td-tabs" colspan="2">
-
-            <div id="ws-tabs-div">
-                <a href="#" class="tab"><i class="sw sw-close tab-button"></i>Wuniras.cgm</a><a href="#" class="tab tab-selected"><i class="sw sw-close tab-button"></i>Large circles.cgm</a><a href="#" class="tab"><i class="sw sw-close tab-button"></i>uniras.cgm</a>
-            </div>
-
-
-        </td>
+        <td id="ws-td-tabs"><div id="ws-tabs-div"></div></td>
     </tr>
     <tr>
-        <td id="ws-td-toolbar" colspan="2">
-
+        <td id="ws-td-toolbar">
             <i id="ws-backward-button" class="sw sw-backward i24 button"></i>
             <i id="ws-forward-button" class="sw sw-forward i24 button"></i>
             <i id="ws-home-button" class="sw sw-home i24 button" onclick="app.tree.selectRoot()"></i>
@@ -40,20 +32,14 @@ exports.view = `
             <div class="vline"></div>
             <i id="ws-switch-button" class="sw sw-switch i24 button"></i>
             <div class="vline"></div>
-            <i id="ws-close-button" class="sw sw-close-doc i24 button" onclick="app.closeActiveDoc()"></i>
-
+            <i id="ws-close-button" class="sw sw-close-doc i24 button" title="Close current document" 
+                onclick="app.closeActiveDoc()"></i>
+            <i id="ws-close-button" class="sw sw-close-all i24 button" title="Close all documents" 
+                onclick="app.closeAll()"></i>
         </td>
     </tr>
     <tr>
-        <td id="ws-td-tree-header"></td>
-        <td id="ws-td-hexview-header"><div id="left-splitter"></div></td>
-    </tr>
-    <tr>
-        <td id="ws-td-tree" rowspan="2"></td>
-        <td id="ws-td-hexview"></td>
-    </tr>
-    <tr>
-        <td id="ws-td-binview">Bin view: <span id="hv-bin-value">n/a</span></td>
+        <td id="doc-space"></td>
     </tr>
 </table>
 `;

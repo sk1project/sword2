@@ -15,15 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {HtmlElement, el} = require('../widgets/base.js');
-const {wTree} = require("../widgets/tree.js");
-
-class wTreeView extends HtmlElement {
-    static defaultOptions = {}
-
-    constructor(app, id = 'ws-td-tree-header') {
-        super(id);
-        this.app = app;
-        this.tree = new wTree('ws-td-tree');
-    }
+exports.view = function (id) {
+    return `
+<table id="doc-table-${id}" class="doc-view">
+    <tr>
+        <td id="ws-td-tree-header"></td>
+        <td id="ws-td-hexview-header"><div id="left-splitter"></div></td>
+    </tr>
+    <tr>
+        <td id="ws-td-tree" rowspan="2"></td>
+        <td id="ws-td-hexview"></td>
+    </tr>
+    <tr>
+        <td id="ws-td-binview">Bin view: <span id="hv-bin-value">n/a</span></td>
+    </tr>
+</table>   
+`;
 }

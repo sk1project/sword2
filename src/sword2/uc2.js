@@ -18,5 +18,5 @@
 const utils = require("./widgets/utils.js");
 
 exports.load = function (filePath) {
-    return {...{'fileName':utils.fileName(filePath)}, ...require('./data.js').mdl};
+    return {...{'fileName':utils.fileName(filePath)}, ...require('./data.js').model()};
 }

@@ -22,6 +22,7 @@ const path = require('path');
 
 const HOME = os.homedir();
 
+const newId = () => (~~(Math.random() * 1e8)).toString(16);
 
 function formatFileSize(bytes, decimals = 2) {
     if (bytes === 0) return '0 bytes';
@@ -91,6 +92,7 @@ function scanDir(dir = HOME) {
     return dirs.concat(files);
 }
 
+exports.newId = newId;
 exports.formatFileSize = formatFileSize;
 exports.parentDir = parentDir;
 exports.isRoot = isRoot;

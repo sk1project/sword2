@@ -22,6 +22,7 @@
     --ws-binview-border: #555555 1px solid;
     --ws-hv-ascii-fg: #de922e;
     --ws-hv-bivalue-fg: #fff;
+    --ws-tabs-max-width: 1024px;
     --plugin-header-bg: #313335;
     --plugin-header-fg: #fff;
     --plugin-header-font: bold normal 20px 'Ubuntu', sans-serif;
@@ -142,6 +143,7 @@ pre {
 
 .truncater {
     max-width: 400px;
+    line-height: 30px;
 /*//calc(100% - 20px);*/
     overflow: hidden;
     white-space: nowrap;
@@ -257,6 +259,7 @@ pre {
 
 #app-td-workspace {
     width: auto;
+    background: var(--stub-bg) url('../images/favicon-120.png') no-repeat center center;
 }
 
 #app-td-plugin-area {
@@ -268,7 +271,7 @@ pre {
 /*------------------WORKSPACE------------------*/
 
 #ws-table {
-    /*display: none;*/
+    display: none;
     width: 100%;
     height: 100vh;
 }
@@ -279,12 +282,17 @@ pre {
     height: 40px;
     min-height: 40px;
     background: var(--app-header-bg);
-    border-bottom: var(--app-panel-border);
 }
 
 #ws-tabs-div {
     height: 40px;
+    overflow: hidden;
     padding-left: 15px;
+    white-space: nowrap;
+}
+
+#ws-tabs-div-inner {
+    display: inline-block;
 }
 
 i.tab-button {
@@ -310,15 +318,25 @@ a.tab {
     text-decoration: none;
     color: var(--app-fg);
     line-height: 30px;
-    margin-top: 5px;
-    padding: 0 25px 0 10px;
+    margin-top: 6px;
     margin-left: -1px;
+    /*margin-bottom: -1px;*/
+    padding: 0 25px 0 10px;
+    text-overflow: ellipsis;
+    max-width: var(--ws-tabs-max-width);
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 a.tab-selected {
     border-top: var(--app-tab-selected);
     background: var(--app-panel-bg);
     line-height: 34px;
+    color: var(--app-selection-fg);
+}
+
+a.tab-selected i{
+    color: var(--app-fg);
 }
 
 /*-----*/
@@ -328,6 +346,12 @@ a.tab-selected {
     height: 40px;
     min-height: 40px;
     border-bottom: var(--app-panel-border);
+}
+
+#doc-space {
+    background: var(--ws-hexview-bg);
+    height: 100%;
+    width: 100%;
 }
 
 /*----Tree-----*/
@@ -434,12 +458,13 @@ a.tab-selected {
 }
 
 #fb-td-view-header {
-    height: 30px;
-    min-height: 30px;
-    background: var(--ws-column-header-bg);
-    color: var(--ws-column-header-fg);
+    height: 35px;
+    min-height: 35px;
+    background: var(--app-bg);
+    color: var(--app-fg);
     padding-left: 5px;
     user-select: text;
+    border-bottom: var(--app-panel-border);
 }
 
 #fb-td-view {

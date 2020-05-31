@@ -14,33 +14,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-const {OptObject} = require('../base');
 
-let document = null;
-let window = null;
-let console = null;
 
-function initBase(doc, win, con) {
-    document = doc;
-    window = win;
-    console = con;
+class OptObject {
+    static defaultOptions = {}
+
+    constructor(opt = {}) {
+        this.opt = {...OptObject.defaultOptions, ...opt};
+    }
 }
 
 class HtmlElement extends OptObject {
     static defaultOptions = {
         display: 'block',
     }
-    constructor(id, opt={}) {
+
+    constructor(id, opt = {}) {
         super({...HtmlElement.defaultOptions, ...opt});
         this.log = console.log;
-        this.document = document;
-        this.window = window;
+        this.document = mainDocument;
+        this.window = mainWindow;
         this.id = id;
         this.el = this.document.getElementById(id);
     }
 
-    display(val = true) {
-        this.el.style.display = val ? this.opt.display : 'none';
+    display(state = true) {
+        this.el.style.display = state ? this.opt.display : 'none';
     }
 
     switchDisplay() {
@@ -49,6 +48,10 @@ class HtmlElement extends OptObject {
 
     setHtml(html = '') {
         this.el.innerHTML = html;
+    }
+
+    addHtml(html = '') {
+        this.el.innerHTML += html;
     }
 
     setBgColor(color = '#fff') {
@@ -66,18 +69,26 @@ class HtmlElement extends OptObject {
     removeClass(cls, prefix = ' ') {
         this.el.className = this.el.className.replace(`${prefix}${cls}`, '');
     }
+
+    getWidth() {
+        return this.el.offsetWidth;
+    }
+
+    getHeight() {
+        return this.el.offsetHeight;
+    }
 }
 
-const el = (id, opt={}) => document.getElementById(id) ? new HtmlElement(id, opt): null;
+const el = (id, opt = {}) => mainDocument.getElementById(id) ? new HtmlElement(id, opt) : null;
 
-class Component extends HtmlElement  {
+class Component extends HtmlElement {
     static defaultOptions = {}
 
-    constructor(id, opt={}) {
+    constructor(id, opt = {}) {
         super(id, {...Component.defaultOptions, ...opt});
     }
 }
 
-exports.initBase = initBase;
+
 exports.el = el;
 exports.HtmlElement = HtmlElement;

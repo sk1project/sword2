@@ -67,3 +67,4 @@
 .sw-image:before {content: "d";}
 
 .sw-file-unsupported:before {content: "j";}
+.sw-close-all:before {content: "p";}

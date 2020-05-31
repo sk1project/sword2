@@ -15,15 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {HtmlElement, el} = require('../widgets/base.js');
-const {wTree} = require("../widgets/tree.js");
+const uc2 = require('./uc2.js');
 
-class wTreeView extends HtmlElement {
-    static defaultOptions = {}
-
-    constructor(app, id = 'ws-td-tree-header') {
-        super(id);
+class DocPresenter {
+    constructor(app, filePath) {
         this.app = app;
-        this.tree = new wTree('ws-td-tree');
+        this.model = uc2.load(filePath);
+        this.id = this.model.id;
+        this.caption = this.model.fileName;
     }
 }
+
+exports.DocPresenter = DocPresenter;

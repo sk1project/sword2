@@ -17,17 +17,20 @@
 
 const nwgui = require('nw.gui');
 
-const {initBase} = require('./widgets/base.js');
-initBase(document, window, console);
+//Workaround for global nwjs object access
+global.console = console;
+global.mainDocument = document;
+global.mainWindow = window;
 
 const {config} = require('./config');
 config.load();
 
 const {HtmlElement, el} = require('./widgets/base.js');
 const {wVSplitter} = require('./widgets/splitter.js');
-const {wTree} = require('./widgets/tree.js');
+const {pWorkSpace} = require('./parts/ws.js');
+const {DocPresenter} = require('./doc.js');
 const {FileBrowserPlugin} = require('./plugins/file-browser.js');
-const uc2 = require('./uc2.js');
+const events = require('./events.js');
 
 let app = null;
 let appView = `
@@ -44,15 +47,14 @@ let appView = `
 class SWord2App extends HtmlElement {
     constructor(id = 'app') {
         super(id);
-        this.activeDocIndex = null;
+        this.activeDoc = null;
         this.docs = [];
 
         this.render();
-        this.ws = el('ws-table',{display: 'table'});
-        this.tree = new wTree('ws-td-tree');
-        // this.tree.setModel(data.mdl);
+        this.ws = new pWorkSpace(this, 'ws-table', {display: 'table'});
         this.fbPlugin = new FileBrowserPlugin(this);
-        this.log(this.ws.opt);
+        this.right_splitter = new wVSplitter('right-splitter',
+            {leftTargetId: 'app-td-workspace', rightTargetId: 'app-td-plugin-area'});
     }
 
     display() {
@@ -64,10 +66,6 @@ class SWord2App extends HtmlElement {
         });
         el('startup').display(false);
         super.display();
-        this.right_splitter = new wVSplitter('right-splitter',
-            {leftTargetId: 'app-td-workspace', rightTargetId: 'app-td-plugin-area'});
-        this.left_splitter = new wVSplitter('left-splitter',
-            {leftTargetId: 'ws-td-tree-header', rightTargetId: 'ws-td-hexview-header'});
     }
 
     run() {
@@ -79,46 +77,60 @@ class SWord2App extends HtmlElement {
         location.reload();
     }
 
+    getDocById(doc_id) {
+        let index = 0;
+        while (index < this.docs.length) {
+            if (this.docs[index].id === doc_id) {
+                return this.docs[index];
+            }
+            index++;
+        }
+        return null;
+    }
+
     openDoc(filePath) {
         let doc = null;
         try {
-            doc = uc2.load(filePath);
+            doc = new DocPresenter(this, filePath);
         } catch (e) {
-            alert(`Error opening: ${filePath}\nSee log file.`);
+            this.log(e);
+            alert(`Error opening:\n${filePath}\n\n${e}\n\nAlso see log file.`);
             return;
         }
-
-        this.activeDocIndex = this.docs.length;
-        this.docs.push(doc);
-        this.log(this.docs, this.docs[0]);
-        this.ws.display(this.docs.length > 0);
-        this.tree.setModel(doc);
+        this.activeDoc = doc;
+        this.docs.unshift(doc);
+        events.emit(events.DOC_CHANGED);
     }
 
-    close(index=0){
-        this.log(`closing ${index}`);
-        if(this.docs.length===0 || index >= this.docs.length) return;
-        let activate = (index===this.activeDocIndex && this.docs.length > 1);
-
-        if (index<this.activeDocIndex) {
-            this.activeDocIndex -=1;
-        } else if(index===this.activeDocIndex && index===this.docs.length-1) {
-            this.activeDocIndex -=1;
+    closeDoc(doc = null, docId = null) {
+        if (doc === null && docId === null) return;
+        doc === null ? doc = this.getDocById(docId) : null;
+        let docIndex = this.docs.indexOf(doc);
+        if (doc.id === this.activeDoc.id) {
+            this.activeDoc = (docIndex === this.docs.length - 1) ? this.docs[docIndex - 1] : this.docs[docIndex + 1];
         }
-
-        delete this.docs[index];
-        this.ws.display(this.docs.length > 0);
-
-        activate ? this.setActiveDoc(this.activeDocIndex): null;
+        doc.id = 0;
+        this.docs = [...this.docs.filter((doc) => !!doc.id)];
+        events.emit(events.DOC_CHANGED);
     }
 
     closeActiveDoc() {
-        this.close(this.activeDocIndex);
+        this.closeDoc(this.activeDoc);
     }
 
-    setActiveDoc(index=0) {
-        if(this.docs.length===0 || index >= this.docs.length) return;
+    closeAll() {
+        while (this.docs.length) {
+            this.closeDoc(this.docs[0]);
+        }
+    }
 
+    setActiveDoc(doc = null, docId = null) {
+        if (doc === null && docId === null) return;
+        doc === null ? doc = this.getDocById(docId) : null;
+        if (doc && doc !== this.activeDoc) {
+            this.activeDoc = doc;
+            events.emit(events.DOC_CHANGED);
+        }
     }
 
     exit() {
@@ -130,7 +142,6 @@ class SWord2App extends HtmlElement {
         this.setHtml(appView);
         el('app-td-workspace').setHtml(require('./view/ws.view.js').view);
         el('app-td-toolbar').setHtml(require('./view/toolbar.view.js').view);
-        el('ws-td-hexview').setHtml(require('./view/hex.view.js').view);
         el('app-td-plugin-area').setHtml(`<div id="right-splitter" class="splitter"></div>
             ${require('./view/file-browser.view.js').view}`);
     }

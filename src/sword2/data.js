@@ -1,7 +1,8 @@
 
 const newId = () => (~~(Math.random() * 1e8)).toString(16);
 
-const  mdl = {
+exports.model = () => ({
+    'id': newId(),
     'name': 'CDRX document model',
     'info_column': true,
     'root': {
@@ -72,6 +73,4 @@ const  mdl = {
             },
         ]
     }
-};
-
-module.exports.mdl = mdl;
+});
