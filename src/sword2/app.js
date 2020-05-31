@@ -111,6 +111,7 @@ class SWord2App extends HtmlElement {
         }
         doc.id = 0;
         this.docs = [...this.docs.filter((doc) => !!doc.id)];
+        doc.remove();
         events.emit(events.DOC_CHANGED);
     }
 

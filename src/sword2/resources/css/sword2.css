@@ -118,7 +118,8 @@ pre {
     width: 8px;
     height: 8px;
     display: initial;
-    position: absolute;
+    /*position: absolute;*/
+    z-index: 1000;
 }
 
 ::-webkit-scrollbar-track {
@@ -263,7 +264,7 @@ pre {
 }
 
 #app-td-plugin-area {
-    width: 500px;
+    width: 400px;
     min-width: 400px;
     border-left: var(--app-panel-border);
 }
@@ -339,6 +340,12 @@ a.tab-selected i{
     color: var(--app-fg);
 }
 
+.doc-view {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
 /*-----*/
 
 #ws-td-toolbar {
@@ -385,7 +392,6 @@ a.tab-selected i{
     overflow-y: auto;
     width: 100%;
     height: 100%;
-    position: relative;
 }
 
 #ws-td-binview {
@@ -641,7 +647,7 @@ div.tree-leaf-ocl {
     color: gray;
     border-left: #ccc 1px solid;
     width: 90px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #fl-table tr {

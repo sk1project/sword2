@@ -1,5 +1,5 @@
-
 const newId = () => (~~(Math.random() * 1e8)).toString(16);
+const newLongId = () => newId() + newId();
 
 exports.model = () => ({
     'id': newId(),

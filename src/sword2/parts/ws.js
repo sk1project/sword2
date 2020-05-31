@@ -26,22 +26,16 @@ class pWorkSpace extends HtmlElement {
         super(id, {...pWorkSpace.defaultOptions, ...opt});
         this.app = app;
         this.tabs = new pTabs(this.app, 'ws-tabs-div');
-        this.docSpace = el('doc-space');
         // this.left_splitter = new wVSplitter('left-splitter',
         //     {leftTargetId: 'ws-td-tree-header', rightTargetId: 'ws-td-hexview-header'});
         events.connect(events.DOC_CHANGED, this.update.bind(this));
     }
 
-    register(doc) {
-
-    }
-
-    unregister(doc) {
-
-    }
-
     update() {
         this.display(!!this.app.docs.length);
+        for (let i = 0; i < this.app.docs.length; i++) {
+            this.app.docs[i].display(this.app.docs[i] === this.app.activeDoc);
+        }
     }
 }
 

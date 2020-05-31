@@ -26,6 +26,7 @@ class OptObject {
 
 class HtmlElement extends OptObject {
     static defaultOptions = {
+        deferred: false,
         display: 'block',
     }
 
@@ -35,7 +36,7 @@ class HtmlElement extends OptObject {
         this.document = mainDocument;
         this.window = mainWindow;
         this.id = id;
-        this.el = this.document.getElementById(id);
+        if(!this.opt.deferred) this.el = this.document.getElementById(this.id);
     }
 
     display(state = true) {
@@ -44,6 +45,10 @@ class HtmlElement extends OptObject {
 
     switchDisplay() {
         this.display(this.el.style.display === 'none');
+    }
+
+    isDisplayed() {
+        return this.el.style.display !== 'none';
     }
 
     setHtml(html = '') {
@@ -76,6 +81,10 @@ class HtmlElement extends OptObject {
 
     getHeight() {
         return this.el.offsetHeight;
+    }
+
+    remove() {
+        this.el.remove();
     }
 }
 

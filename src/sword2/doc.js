@@ -15,14 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const {HtmlElement, el} = require('./widgets/base.js');
 const uc2 = require('./uc2.js');
 
-class DocPresenter {
-    constructor(app, filePath) {
+class DocPresenter extends HtmlElement {
+    static defaultOptions = {
+        deferred: true,
+        parent: 'doc-space',
+        class_: 'doc-view',
+    }
+
+    constructor(app, filePath, opt = {}) {
+        super(null, {...DocPresenter.defaultOptions, ...opt});
         this.app = app;
         this.model = uc2.load(filePath);
         this.id = this.model.id;
         this.caption = this.model.fileName;
+        this.render();
+    }
+
+    render() {
+        this.el = this.document.createElement('div');
+        this.el.setAttribute('id', this.id);
+        this.el.setAttribute('class', this.opt.class_);
+        this.el.innerHTML = `<big>${this.id}</big>`;
+        el(this.opt.parent).el.appendChild(this.el);
     }
 }
 
