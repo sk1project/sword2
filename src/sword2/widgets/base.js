@@ -34,7 +34,7 @@ class HtmlElement extends OptObject {
         super({...HtmlElement.defaultOptions, ...opt});
         this.log = console.log;
         this.document = mainDocument;
-        this.window = mainWindow;
+        this.mw = mainWindow;
         this.id = id;
         if(!this.opt.deferred) this.el = this.document.getElementById(this.id);
     }

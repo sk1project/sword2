@@ -26,7 +26,7 @@ class pTabs extends HtmlElement {
         this.app = app;
         this.width = null;
         events.connect(events.DOC_CHANGED, this.update.bind(this));
-        this.window.addEventListener("resize", this.update.bind(this));
+        this.mw.addEventListener("resize", this.update.bind(this));
     }
 
     update() {

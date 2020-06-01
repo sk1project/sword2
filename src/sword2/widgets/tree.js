@@ -19,7 +19,8 @@ const {HtmlElement, el} = require('./base.js');
 
 class wTree extends HtmlElement {
     static defaultOptions = {
-        callbackPrefix: 'app.tree'
+        callbackPrefix: 'app.tree',
+        selectCallback: null,
     }
 
     constructor(id, opt = {}) {
@@ -155,6 +156,7 @@ class wTree extends HtmlElement {
                 let id = `tree-${item}-${this.selected}`;
                 el(id) ? el(id).addClass('selected') : null;
             }, this);
+            if (this.opt.selectCallback) this.opt.selectCallback(this.mapping[node_id]);
         }
     }
 }

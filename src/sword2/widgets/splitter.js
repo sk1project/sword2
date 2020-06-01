@@ -48,13 +48,13 @@ class wVSplitter extends HtmlElement {
         let delta = event.clientX - this.start;
         this.left_target.el.style.width = `${this.left_w + delta}px`;
         this.right_target.el.style.width = `${this.right_w - delta}px`;
-        this.window.getSelection().empty();
+        this.mw.getSelection().empty();
     }
 
     onMouseUp() {
         this.document.onmousemove = null;
         this.document.onmouseup = null;
-        this.window.getSelection().empty()
+        this.mw.getSelection().empty()
     }
 
     onParentMove() {

@@ -38,7 +38,8 @@ class DocPresenter extends HtmlElement {
         this.setTreeCaption(this.model.name);
         this.left_splitter = new wVSplitter(`left-splitter-${this.id}`,
             {leftTargetId: `ws-td-tree-header-${this.id}`, rightTargetId: `ws-td-hexview-header-${this.id}`});
-        this.tree = new wTree(`ws-td-tree-${this.id}`, {callbackPrefix: 'app.activeDoc.tree'});
+        this.tree = new wTree(`ws-td-tree-${this.id}`,
+            {callbackPrefix: 'app.activeDoc.tree', selectCallback: this.chunkSelected.bind(this)});
         this.tree.setModel(this.model);
     }
 
@@ -52,6 +53,10 @@ class DocPresenter extends HtmlElement {
         this.el.setAttribute('class', this.opt.class_);
         this.el.innerHTML = require('./view/doc.view').view(this.id);
         el(this.opt.parent).el.appendChild(this.el);
+    }
+
+    chunkSelected(chunk) {
+        this.log(chunk);
     }
 }
 

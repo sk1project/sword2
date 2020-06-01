@@ -22,7 +22,7 @@ global.console = console;
 global.mainDocument = document;
 global.mainWindow = window;
 
-const {config} = require('./config');
+const {config} = require('./config.js');
 config.load();
 
 const {HtmlElement, el} = require('./widgets/base.js');
@@ -33,20 +33,12 @@ const {FileBrowserPlugin} = require('./plugins/file-browser.js');
 const events = require('./events.js');
 
 let app = null;
-let appView = `
-    <table id="app-table">
-        <tr>
-            <td id="app-td-toolbar"></td>
-            <td id="app-td-workspace"></td>
-            <td id="app-td-plugin-area"></td>
-        </tr>
-    </table>
-`;
 
 
 class SWord2App extends HtmlElement {
     constructor(id = 'app') {
         super(id);
+        this.mw = null;
         this.activeDoc = null;
         this.docs = [];
 
@@ -58,18 +50,26 @@ class SWord2App extends HtmlElement {
     }
 
     display() {
-        let win = nwgui.Window.get()
-        win.maximize();
-        win.setMinimumSize(config.winMinWidth, config.winMinHeight);
-        win.on('close', function () {
-            app.exit();
-        });
+        this.mw = nwgui.Window.get();
+        global.mainWindow = this.mw;
+
+        this.mw.setMinimumSize(config.winMinWidth, config.winMinHeight);
+        if(config.winMaximized) this.mw.maximize();
+        this.mw.setPosition('center');
+        this.mw.on('close', function () {app.exit();});
+        this.mw.on('maximize', function () {config.winMaximized=true;});
+        this.mw.on('restore', function () {config.winMaximized=false;});
         el('startup').display(false);
         super.display();
     }
 
     run() {
         setTimeout(this.display.bind(this), 100);
+    }
+
+    exit() {
+        config.save();
+        nwgui.App.quit();
     }
 
     reload() {
@@ -134,13 +134,8 @@ class SWord2App extends HtmlElement {
         }
     }
 
-    exit() {
-        config.save();
-        nwgui.App.quit();
-    }
-
     render() {
-        this.setHtml(appView);
+        this.setHtml(require('./view/app.view.js').view);
         el('app-td-workspace').setHtml(require('./view/ws.view.js').view);
         el('app-td-toolbar').setHtml(require('./view/toolbar.view.js').view);
         el('app-td-plugin-area').setHtml(`<div id="plugin-splitter" class="splitter"></div>
