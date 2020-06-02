@@ -15,13 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {HtmlElement, el} = require('../widgets/base.js');
+const utils = require("../widgets/utils.js");
 
-class pDocView extends HtmlElement {
-    static defaultOptions = {}
-
-    constructor(app, id, opt = {}) {
-        super(id, {...pDocView.defaultOptions, ...opt});
-        this.app = app;
-    }
+exports.load = function (filePath) {
+    return {...{'fileName':utils.fileName(filePath)}, ...require('../data.js').model()};
 }

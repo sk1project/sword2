@@ -28,11 +28,23 @@ config.load();
 const {HtmlElement, el} = require('./widgets/base.js');
 const {wVSplitter} = require('./widgets/splitter.js');
 const {pWorkSpace} = require('./parts/ws.js');
-const {DocPresenter} = require('./doc.js');
+const {DocPresenter} = require('./parts/doc.js');
 const {FileBrowserPlugin} = require('./plugins/file-browser.js');
 const events = require('./events.js');
 
 let app = null;
+
+function getSelectedText() {
+    let txt = '';
+    if (window.getSelection) {
+        txt = window.getSelection();
+    } else if (document.getSelection) {
+        txt = document.getSelection();
+    } else if (document.selection) {
+        txt = document.selection.createRange().text;
+    }
+    return txt.toString() || '';
+}
 
 
 class SWord2App extends HtmlElement {
@@ -45,7 +57,7 @@ class SWord2App extends HtmlElement {
         this.render();
         this.ws = new pWorkSpace(this, 'ws-table', {display: 'table'});
         this.fbPlugin = new FileBrowserPlugin(this);
-        this.plugin_splitter = new wVSplitter('plugin-splitter',
+        this.pluginSplitter = new wVSplitter('plugin-splitter',
             {leftTargetId: 'app-td-workspace', rightTargetId: 'app-td-plugin-area'});
     }
 
@@ -54,13 +66,20 @@ class SWord2App extends HtmlElement {
         global.mainWindow = this.mw;
 
         this.mw.setMinimumSize(config.winMinWidth, config.winMinHeight);
-        if(config.winMaximized) this.mw.maximize();
+        if (config.winMaximized) this.mw.maximize();
         this.mw.setPosition('center');
-        this.mw.on('close', function () {app.exit();});
-        this.mw.on('maximize', function () {config.winMaximized=true;});
-        this.mw.on('restore', function () {config.winMaximized=false;});
+        this.mw.on('close', function () {
+            app.exit();
+        });
+        this.mw.on('maximize', function () {
+            config.winMaximized = true;
+        });
+        this.mw.on('restore', function () {
+            config.winMaximized = false;
+        });
         el('startup').display(false);
         super.display();
+        this.pluginSplitter.update();
     }
 
     run() {
@@ -70,11 +89,6 @@ class SWord2App extends HtmlElement {
     exit() {
         config.save();
         nwgui.App.quit();
-    }
-
-    reload() {
-        nwgui.App.clearCache();
-        location.reload();
     }
 
     getDocById(doc_id) {

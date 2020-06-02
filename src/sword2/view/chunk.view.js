@@ -15,16 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-exports.view = `
+exports.view = function (id) {
+    return `
 <div class="div-scroll">
-    <table id="hv-table">
+    <table id="hv-table-${id}" class="hv-table">
         <tr>
-            <td id="hv-td-nums"></td>
-            <td id="hv-td-hex"></td>
-            <td id="hv-td-ascii"></td>
+            <td id="hv-td-nums-${id}" class="hv-td-nums"></td>
+            <td id="hv-td-hex-${id}" class="hv-td-hex" 
+            onmouseup="app.activeDoc.chunkViewer.hexViewer.hexSelected(getSelectedText())"></td>
+            <td id="hv-td-ascii-${id}" class="hv-td-ascii"></td>
             <td></td>
         </tr>
     </table>
 </div>
 `;
-
+}

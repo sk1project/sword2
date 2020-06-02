@@ -284,14 +284,11 @@ pre {
 }
 
 #ws-tabs-div {
+    border-bottom: var(--app-panel-border);
     height: 40px;
-    overflow: hidden;
-    padding-left: 15px;
     white-space: nowrap;
-}
-
-#ws-tabs-div-inner {
-    display: inline-block;
+    padding-left: 15px;
+    overflow: visible;
 }
 
 i.tab-button {
@@ -311,15 +308,12 @@ i.tab-button:active {
 
 a.tab {
     display: inline-block;
-    border-left: var(--app-panel-border);
-    border-top: var(--app-panel-border);
-    border-right: var(--app-panel-border);
+    border: var(--app-panel-border);
     text-decoration: none;
     color: var(--app-fg);
-    line-height: 30px;
-    margin-top: 6px;
+    line-height: 28px;
+    margin-top: 4px;
     margin-left: -1px;
-    /*margin-bottom: -1px;*/
     padding: 0 25px 0 10px;
     text-overflow: ellipsis;
     max-width: var(--ws-tabs-max-width);
@@ -329,8 +323,9 @@ a.tab {
 
 a.tab-selected {
     border-top: var(--app-tab-selected);
+    border-bottom: none;
     background: var(--app-panel-bg);
-    line-height: 34px;
+    line-height: 35px;
     color: var(--app-selection-fg);
 }
 
@@ -364,7 +359,7 @@ a.tab-selected i{
 .ws-td-tree-header {
     border-right: #4b4b4b 1px solid;
     padding-left: 5px;
-    width: 380px;
+    width: 300px;
     min-width: 300px;
 }
 
@@ -374,11 +369,11 @@ a.tab-selected i{
 }
 
 /*----Hex viewer-----*/
-.hexview-header {
+.chunkview-header {
     padding-left: 0 !important;
 }
 
-.ws-td-hexview {
+.ws-td-chunkview {
     background: var(--ws-hexview-bg);
 }
 
@@ -398,12 +393,12 @@ a.tab-selected i{
     padding-left: 45px;
 }
 
-#hv-table {
+.hv-table {
     width: 100%;
     min-height: 100%;
 }
 
-#hv-td-nums {
+.hv-td-nums {
     width: 108px;
     color: var(--ws-binview-fg);
     background: var(--ws-binview-bg);
@@ -411,7 +406,7 @@ a.tab-selected i{
     vertical-align: top;
 }
 
-#hv-td-hex {
+.hv-td-hex {
     width: 395px;
     color: var(--ws-hexview-fg);
     border-right: var(--ws-hexview-border);
@@ -419,7 +414,7 @@ a.tab-selected i{
     user-select: text;
 }
 
-#hv-td-ascii {
+.hv-td-ascii {
     width: 185px;
     color: var(--ws-hv-ascii-fg);
     border-right: var(--ws-hexview-border);

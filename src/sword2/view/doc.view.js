@@ -20,17 +20,17 @@ exports.view = function (id) {
 <table id="${id}" class="doc-view">
     <tr>
         <td id="ws-td-tree-header-${id}" class="view-header ws-td-tree-header"></td>
-        <td id="ws-td-hexview-header-${id}" class="view-header hexview-header">
+        <td id="ws-td-chunkview-header-${id}" class="view-header chunkview-header">
             <div id="left-splitter-${id}" class="splitter left-splitter"></div>
         </td>
     </tr>
     <tr>
         <td id="ws-td-tree-${id}" class="ws-td-tree" rowspan="2"></td>
-        <td id="ws-td-hexview-${id}" class="ws-td-hexview"></td>
+        <td id="ws-td-chunkview-${id}" class="ws-td-chunkview"></td>
     </tr>
     <tr>
         <td id="ws-td-binview-${id}" class="ws-td-binview">
-            Bin view: <span id="hv-bin-value-${id}" class="hv-bin-value">n/a</span>
+            Bin view: <span id="hv-bin-value-${id}" class="hv-bin-value"></span>
         </td>
     </tr>
 </table>   

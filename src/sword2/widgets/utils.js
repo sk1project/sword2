@@ -24,6 +24,8 @@ const HOME = os.homedir();
 
 const newId = () => (~~(Math.random() * 1e8)).toString(16);
 
+const countLines = (txt) => txt.split(/\r\n|\r|\n/).length;
+
 function formatFileSize(bytes, decimals = 2) {
     if (bytes === 0) return '0 bytes';
 
@@ -93,6 +95,7 @@ function scanDir(dir = HOME) {
 }
 
 exports.newId = newId;
+exports.countLines = countLines;
 exports.formatFileSize = formatFileSize;
 exports.parentDir = parentDir;
 exports.isRoot = isRoot;

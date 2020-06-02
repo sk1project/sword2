@@ -46,7 +46,7 @@ exports.model = () => ({
                         'node': false,
                         'fields': {},
                         'chunkHex': 'f9d0004a f9b6004a f980004a f9eb004a\nf90c4444 444c8000 4af9eb00 4af9',
-                        'chunkAscii': '...J...J...J...J\\n..DDDL..J...J.',
+                        'chunkAscii': '...J...J...J...J\n..DDDL..J...J.',
                     },
                 ]
             },
