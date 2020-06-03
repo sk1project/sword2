@@ -26,6 +26,7 @@ const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 // TODO: portable version
 
 const staticConfig = {
+    appName: 'SWord 2.0',
     HOME: HOME,
     fileTypes: ['.sk2', '.sk1', '.sk', '.svg', '.svgz', '.cgm', '.xar', '.cdr', '.cmx', '.cdt', '.ccx', '.fig', '.plt',
         '.wmf', '.dst', '.edr', '.pes', '.skp', '.aco', '.ase', '.xml', '.cpl', '.gpl', '.jcw', '.soc'],

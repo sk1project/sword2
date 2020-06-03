@@ -94,6 +94,7 @@ function scanDir(dir = HOME) {
     return dirs.concat(files);
 }
 
+exports.HOME = HOME;
 exports.newId = newId;
 exports.countLines = countLines;
 exports.formatFileSize = formatFileSize;

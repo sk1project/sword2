@@ -34,7 +34,6 @@ class wHexViewer extends HtmlElement {
 
     setChunk(chunk) {
         let nums = '';
-        console.log(utils.countLines(chunk.chunkAscii));
         for (let i = 0; i < utils.countLines(chunk.chunkAscii); i++) {
             nums += `0000:` + ((i + 1) * 16).toString(16).padStart(4, '0') + '\n';
         }

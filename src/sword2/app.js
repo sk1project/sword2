@@ -60,6 +60,7 @@ class SWord2App extends HtmlElement {
         this.fbPlugin = new FileBrowserPlugin(this);
         this.pluginSplitter = new wVSplitter('plugin-splitter',
             {leftTargetId: 'app-td-workspace', rightTargetId: 'app-td-plugin-area'});
+        events.connect(events.DOC_CHANGED, this.setWindowTitle.bind(this));
     }
 
     display() {
@@ -157,9 +158,8 @@ class SWord2App extends HtmlElement {
         el('app-td-plugin-area').setHtml(`<div id="plugin-splitter" class="splitter"></div>
             ${require('./view/file-browser.view.js').view}`);
     }
-}
 
-function main() {
-    app = new SWord2App();
-    app.run();
+    setWindowTitle() {
+        document.title = this.activeDoc ? `[${this.activeDoc.model.filePath}] - ${config.appName}` : `${config.appName}`;
+    }
 }

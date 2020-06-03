@@ -41,5 +41,6 @@ exports.convertHex = function (hexstring, bigEndian=false) {
 }
 
 exports.load = function (filePath) {
-    return {...{'fileName': utils.fileName(filePath)}, ...require('../data.js').model()};
+    let minPath = filePath.startsWith(utils.HOME) ? filePath.replace(utils.HOME, '~'): filePath;
+    return {...{'fileName': utils.fileName(filePath), 'filePath': minPath}, ...require('../data.js').model()};
 }

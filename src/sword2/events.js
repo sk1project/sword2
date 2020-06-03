@@ -29,7 +29,7 @@ function disconnect(channel, callback) {
 
 function emit(channel) {
     channel.forEach(function (callback) {
-        setTimeout(callback, 10);
+        setTimeout(callback);
     });
 }
 
