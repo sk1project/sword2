@@ -86,6 +86,10 @@ class HtmlElement extends OptObject {
     remove() {
         this.el.remove();
     }
+
+    update() {
+        //Stub for later implementation
+    }
 }
 
 const el = (id, opt = {}) => mainDocument.getElementById(id) ? new HtmlElement(id, opt) : null;

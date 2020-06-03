@@ -15,8 +15,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const {exec, execSync} = require("child_process");
+const path = require("path");
 const utils = require("../widgets/utils.js");
 
+let UC2PATH = null;
+
+exports.init = function () {
+    exec("uc2 --package-dir", (error, stdout, stderr) => {
+        if (error) {
+            console.log(`Error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`Stderr: ${stderr}`);
+            return;
+        }
+        UC2PATH = stdout;
+    });
+}
+
+exports.convertHex = function (hexstring, bigEndian=false) {
+    bigEndian = bigEndian ? 'yes': 'no';
+    console.log(execSync(path.join(__dirname, `convert.py ${bigEndian} ${hexstring}`)).toString('utf-8'));
+}
+
 exports.load = function (filePath) {
-    return {...{'fileName':utils.fileName(filePath)}, ...require('../data.js').model()};
+    return {...{'fileName': utils.fileName(filePath)}, ...require('../data.js').model()};
 }

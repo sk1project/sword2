@@ -430,7 +430,7 @@ a.tab-selected i{
 
 /*------------------PLUGINS------------------*/
 
-#fb-table {
+.plugin-table{
     height: 100%;
 }
 
@@ -600,16 +600,16 @@ div.tree-leaf-ocl {
 
 /*---------------FILE TABLE-----------------*/
 
-#fl-table {
-    table-layout:fixed;
-    border-collapse: collapse;
+#fl-table{
+    table-layout:fixed !important;
+    border-collapse: collapse !important;
     width: 100%;
 }
 
 #fl-table td {
     padding: 0px 6px;
     cursor: pointer !important;
-    user-select: none;
+    /*user-select: none;*/
     line-height: 36px;
     vertical-align: middle;
 }
@@ -656,5 +656,19 @@ div.tree-leaf-ocl {
 }
 
 #fl-table tr:nth-child(even) {
+    background: #dae5f4;
+}
+
+/*--------------------DATA CONVERT----------------------*/
+
+#dc-table {
+    display: none !important;
+}
+
+#dc-values-table tr:nth-child(odd) {
+    background: #fff;
+}
+
+#dc-values-table tr:nth-child(even) {
     background: #dae5f4;
 }

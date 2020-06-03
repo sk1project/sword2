@@ -31,6 +31,7 @@ const {pWorkSpace} = require('./parts/ws.js');
 const {DocPresenter} = require('./parts/doc.js');
 const {FileBrowserPlugin} = require('./plugins/file-browser.js');
 const events = require('./events.js');
+const uc2 = require('./python/uc2.js');
 
 let app = null;
 
@@ -84,6 +85,7 @@ class SWord2App extends HtmlElement {
 
     run() {
         setTimeout(this.display.bind(this), 100);
+        uc2.init();
     }
 
     exit() {

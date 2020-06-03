@@ -22,8 +22,11 @@ const {wButton} = require("../widgets/button.js");
 const {config} = require('../config.js');
 
 class FileBrowserPlugin extends HtmlElement {
-    constructor(app, id = 'fb-table') {
-        super(id);
+    static defaultOptions = {
+        display: 'table',
+    }
+    constructor(app, id = 'fb-table', opt = {}) {
+        super(id, {...FileBrowserPlugin.defaultOptions, ...opt});
         this.app = app;
         this.backward = [];
         this.forward = [];

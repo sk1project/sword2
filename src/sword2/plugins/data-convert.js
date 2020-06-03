@@ -15,22 +15,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
- exports.view = `
- <table id="fb-table" class="plugin-table">
-     <tr><td id="fb-table-header" class="plugin-header">File Browser</td></tr>
-     <tr>
-         <td id="fb-td-panel" class="plugin-panel">
-             <i id="fb-backward-button"></i>
-             <i id="fb-forward-button"></i>
-             <i id="fb-up-button"></i>
-             <div class="vline"></div>
-             <i id="fb-home-button"></i>
-             <i id="fb-refresh-button"></i>
-             <div class="vline"></div>
-             <i id="fb-delete-button"></i>
-         </td>
-     </tr>
-     <tr><td id="fb-td-view-header" class="view-header"></td></tr>
-     <tr><td id="fb-td-view"></td></tr>
- </table>
-`;
+const {HtmlElement, el} = require('../widgets/base.js');
+const {config} = require('../config.js');
+
+class DataConvertPlugin extends HtmlElement {
+    static defaultOptions = {
+        display: 'table',
+    }
+    constructor(app, id = 'dc-table', opt = {}) {
+        super(id, {...DataConvertPlugin.defaultOptions, ...opt});
+        this.app = app;
+    }
+}
+
+exports.DataConvertPlugin = DataConvertPlugin;

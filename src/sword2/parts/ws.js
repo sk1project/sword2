@@ -16,7 +16,7 @@
  */
 
 const {pTabs} = require('./tabs');
-const {HtmlElement, el} = require('../widgets/base.js');
+const {HtmlElement} = require('../widgets/base.js');
 const events = require('../events.js');
 
 class pWorkSpace extends HtmlElement {
@@ -31,6 +31,7 @@ class pWorkSpace extends HtmlElement {
 
     update() {
         this.display(!!this.app.docs.length);
+        this.tabs.update();
         for (let i = 0; i < this.app.docs.length; i++) {
             this.app.docs[i].display(this.app.docs[i] === this.app.activeDoc);
         }

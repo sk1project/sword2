@@ -20,7 +20,7 @@ const {wVSplitter} = require('../widgets/splitter.js');
 const {wBinViewer} = require('../widgets/binviewer.js');
 const {wChunkViewer} = require('../widgets/chunkviewer.js');
 const {wTree} = require('../widgets/tree.js');
-const uc2 = require('./uc2.js');
+const uc2 = require('../python/uc2.js');
 
 class DocPresenter extends HtmlElement {
     static defaultOptions = {
@@ -46,6 +46,7 @@ class DocPresenter extends HtmlElement {
         this.tree = new wTree(`ws-td-tree-${this.id}`,
             {callbackPrefix: 'app.activeDoc.tree', selectCallback: this.chunkSelected.bind(this)});
         this.tree.setModel(this.model);
+        this.leftSplitter.update();
     }
 
     setTreeCaption(txt) {
