@@ -22,8 +22,10 @@ exports.view = `
     </tr>
     <tr>
         <td id="ws-td-toolbar">
-            <i id="ws-backward-button" class="sw sw-backward i24 button" title="Go to previous element"></i>
-            <i id="ws-forward-button" class="sw sw-forward i24 button" title="Go to next element"></i>
+            <i id="ws-backward-button" class="sw sw-backward i24 button" title="Go to previous element"
+               onclick="app.activeDoc.tree.goBack()"></i>
+            <i id="ws-forward-button" class="sw sw-forward i24 button" title="Go to next element"
+               onclick="app.activeDoc.tree.goForward()"></i>
             <i id="ws-home-button" class="sw sw-home i24 button" title="Go to tree root node"
                 onclick="app.activeDoc.tree.selectRoot()"></i>
             <i id="ws-refresh-button" class="sw sw-refresh i24 button" title="Refresh tree view"

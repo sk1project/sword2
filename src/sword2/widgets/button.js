@@ -29,7 +29,7 @@ class wButton extends HtmlElement {
     constructor(id, opt = {}) {
         super(id, {...wButton.defaultOptions, ...opt});
         this.setClassName();
-        this.el.onclick = this.opt.callback;
+        this.opt.callback ? this.el.onclick = this.opt.callback : this.opt.callback = this.el.onclick ;
         if(this.opt.title) this.el.setAttribute('title', this.opt.title);
     }
 

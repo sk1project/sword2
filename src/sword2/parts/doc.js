@@ -62,6 +62,7 @@ class DocPresenter extends HtmlElement {
     }
 
     chunkSelected(chunk) {
+        this.app.ws.updateButtons();
         this.chunkViewer.setChunk(chunk);
     }
 

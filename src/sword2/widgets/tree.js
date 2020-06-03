@@ -31,6 +31,34 @@ class wTree extends HtmlElement {
         this.root = null;
         this.nodes = [];
         this.mapping = {};
+        this.history = {'back': [], 'forward': []};
+        this.forwarded = false;
+    }
+
+    goBack() {
+        this.log('BACK');
+        if(this.history.back.length) {
+            this.log('BACK');
+            let item =  this.history.back.pop();
+            this.history.forward.push(this.selected);
+            let fw = this.history.forward;
+            this.forwarded = true;
+            this.nodeSelected(item)
+            this.history.forward = fw;
+            this.forwarded = false;
+        }
+    }
+
+    goForward() {
+        if(this.history.forward.length) {
+            this.log('FORWARD');
+            let item =  this.history.forward.pop();
+            let fw = this.history.forward;
+            this.forwarded = true;
+            this.nodeSelected(item)
+            this.history.forward = fw;
+            this.forwarded = false;
+        }
     }
 
     setModel(model = {}) {
@@ -149,8 +177,12 @@ class wTree extends HtmlElement {
                 let id = `tree-${item}-${this.selected}`;
                 el(id) ? el(id).removeClass('selected') : null;
             }, this);
+
+            if(this.selected !== this.history.forward[this.history.forward.length - 1])
+                this.history.back.push(this.selected);
         }
         this.selected = node_id;
+        if (!this.forwarded) this.history.forward = [];
         if (this.selected !== null) {
             arr.forEach(function (item) {
                 let id = `tree-${item}-${this.selected}`;

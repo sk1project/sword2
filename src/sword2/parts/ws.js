@@ -17,6 +17,7 @@
 
 const {pTabs} = require('./tabs');
 const {HtmlElement} = require('../widgets/base.js');
+const {wButton} = require('../widgets/button.js');
 const events = require('../events.js');
 
 class pWorkSpace extends HtmlElement {
@@ -26,14 +27,27 @@ class pWorkSpace extends HtmlElement {
         super(id, {...pWorkSpace.defaultOptions, ...opt});
         this.app = app;
         this.tabs = new pTabs(this.app, 'ws-tabs-div');
+        this.backBtn = new wButton('ws-backward-button', {icon: 'backward'});
+        this.forwardBtn = new wButton('ws-forward-button', {icon: 'forward'});
         events.connect(events.DOC_CHANGED, this.update.bind(this));
     }
 
     update() {
         this.display(!!this.app.docs.length);
         this.tabs.update();
+        this.updateButtons();
         for (let i = 0; i < this.app.docs.length; i++) {
             this.app.docs[i].display(this.app.docs[i] === this.app.activeDoc);
+        }
+    }
+
+    updateButtons() {
+        if(this.app.activeDoc) {
+            this.backBtn.setEnabled(this.app.activeDoc.tree.history.back.length);
+            this.forwardBtn.setEnabled(this.app.activeDoc.tree.history.forward.length);
+        } else {
+            this.backBtn.disable();
+            this.forwardBtn.disable();
         }
     }
 }
