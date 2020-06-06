@@ -37,7 +37,7 @@ exports.init = function () {
 
 exports.convertHex = function (hexstring, bigEndian=false) {
     bigEndian = bigEndian ? 'yes': 'no';
-    console.log(execSync(path.join(__dirname, `convert.py ${bigEndian} ${hexstring}`)).toString('utf-8'));
+    return JSON.parse(execSync(path.join(__dirname, `convert.py ${bigEndian} ${hexstring}`)).toString('utf-8'));
 }
 
 exports.load = function (filePath) {

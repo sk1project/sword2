@@ -27,9 +27,11 @@ config.load();
 
 const {HtmlElement, el} = require('./widgets/base.js');
 const {wVSplitter} = require('./widgets/splitter.js');
+const {wToggleButton, wToggleGroup} = require('./widgets/button.js');
 const {pWorkSpace} = require('./parts/ws.js');
 const {DocPresenter} = require('./parts/doc.js');
 const {FileBrowserPlugin} = require('./plugins/file-browser.js');
+const {DataConvertPlugin} = require('./plugins/data-convert.js');
 const events = require('./events.js');
 const uc2 = require('./python/uc2.js');
 
@@ -58,9 +60,31 @@ class SWord2App extends HtmlElement {
         this.render();
         this.ws = new pWorkSpace(this, 'ws-table', {display: 'table'});
         this.fbPlugin = new FileBrowserPlugin(this);
+        this.dcPlugin = new DataConvertPlugin(this);
         this.pluginSplitter = new wVSplitter('plugin-splitter',
             {leftTargetId: 'app-td-workspace', rightTargetId: 'app-td-plugin-area'});
+        this.group = new wToggleGroup();
+        this.group.add(new wToggleButton('tb-files-button',
+            {
+                size: 32, icon: 'dir', pressed: true, class_: 'app-toolbar-button',
+                retval: true, callback: this.switchPlugin.bind(this)
+            }))
+        this.group.add(new wToggleButton('tb-convert-button',
+            {
+                size: 32, icon: 'calc', class_: 'app-toolbar-button',
+                retval: false, callback: this.switchPlugin.bind(this)
+            }))
         events.connect(events.DOC_CHANGED, this.setWindowTitle.bind(this));
+    }
+
+    switchPlugin(state = true) {
+        if (state) {
+            this.dcPlugin.display(false);
+            this.fbPlugin.display(true);
+        } else {
+            this.fbPlugin.display(false);
+            this.dcPlugin.display(true);
+        }
     }
 
     display() {
@@ -156,7 +180,7 @@ class SWord2App extends HtmlElement {
         el('app-td-workspace').setHtml(require('./view/ws.view.js').view);
         el('app-td-toolbar').setHtml(require('./view/toolbar.view.js').view);
         el('app-td-plugin-area').setHtml(`<div id="plugin-splitter" class="splitter"></div>
-            ${require('./view/file-browser.view.js').view}`);
+            ${require('./view/file-browser.view.js').view}${require('./view/data-convert.view.js').view}`);
     }
 
     setWindowTitle() {

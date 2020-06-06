@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {HtmlElement, el} = require('./base.js');
+const {HtmlElement} = require('./base.js');
 
 
 class wButton extends HtmlElement {
@@ -29,8 +29,8 @@ class wButton extends HtmlElement {
     constructor(id, opt = {}) {
         super(id, {...wButton.defaultOptions, ...opt});
         this.setClassName();
-        this.opt.callback ? this.el.onclick = this.opt.callback : this.opt.callback = this.el.onclick ;
-        if(this.opt.title) this.el.setAttribute('title', this.opt.title);
+        this.opt.callback ? this.el.onclick = this.opt.callback : this.opt.callback = this.el.onclick;
+        if (this.opt.title) this.el.setAttribute('title', this.opt.title);
     }
 
     setClassName(disabled = false) {
@@ -47,9 +47,82 @@ class wButton extends HtmlElement {
         this.el.onclick = this.opt.callback;
     }
 
-    setEnabled(state=true) {
+    setEnabled(state = true) {
         state ? this.enable() : this.disable();
     }
 }
 
+
+class wToggleButton extends HtmlElement {
+    static defaultOptions = {
+        callback: null,
+        onpressCallback: null,
+        icon: 'quest',
+        title: '',
+        size: 24,
+        state: true,
+        pressed: false,
+        class_: 'toggle-button',
+        retval: true,
+    }
+
+    constructor(id, opt = {}) {
+        super(id, {...wToggleButton.defaultOptions, ...opt});
+        this.setClassName(this.opt.state, this.opt.pressed);
+        this.el.onmousedown = this.onpress.bind(this);
+        if (this.opt.title) this.el.setAttribute('title', this.opt.title);
+    }
+
+    setClassName(enabled = true, pressed = false) {
+        this.el.className = `sw sw-${this.opt.icon} i${this.opt.size} ` +
+            `${this.opt.class_}${enabled ? '' : '-disabled'}${pressed ? '-pressed' : ''}`;
+    }
+
+    onpress() {
+        if (!this.opt.state) return;
+        if (this.opt.onpressCallback && this.opt.pressed) return;
+        this.setPressed(!this.opt.pressed);
+        if (this.opt.onpressCallback) this.opt.onpressCallback(this);
+        if(this.opt.callback) this.opt.callback(this.opt.retval);
+    }
+
+    disable() {
+        this.opt.state = false;
+        this.setClassName(false);
+    }
+
+    enable() {
+        this.opt.state = true;
+        this.setClassName();
+    }
+
+    setEnabled(state = true) {
+        state ? this.enable() : this.disable();
+    }
+
+    setPressed(state=true) {
+        this.opt.pressed = state;
+        this.setClassName(this.opt.state, this.opt.pressed);
+    }
+}
+
+class wToggleGroup {
+    constructor() {
+        this.btns = [];
+    }
+
+    add(btn) {
+        btn.opt.onpressCallback = this.pressed.bind(this);
+        this.btns.push(btn);
+    }
+
+    pressed(btn) {
+        for(let i =0; i<this.btns.length; i++) {
+            if(this.btns[i] !== btn) this.btns[i].setPressed(false);
+        }
+    }
+}
+
 exports.wButton = wButton;
+exports.wToggleButton = wToggleButton;
+exports.wToggleGroup = wToggleGroup;

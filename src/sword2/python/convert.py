@@ -36,7 +36,7 @@ values = {
     'Double': '--',
 }
 
-if sys.argv:
+if len(sys.argv)>2:
     data = sys.argv[2]
 
     endian = '>' if sys.argv[1] == 'yes' else '<'

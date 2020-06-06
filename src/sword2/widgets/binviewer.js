@@ -29,7 +29,6 @@ class wBinViewer extends HtmlElement {
     }
 
     setValue(value='') {
-        value = value.replace('\n','').replace(' ','')
         let subvalue = value.substr(0,8);
         let result = []
         let i = 0;

@@ -21,7 +21,7 @@
 .i22 {font-size: 22px; !important;}
 .i16 {font-size: 16px; !important;}
 
-.sw {
+.sw, .sw-stack {
     display: inline-block;
     font-weight: normal;
     font-variant: normal;
@@ -34,10 +34,13 @@
     text-decoration: none;
 }
 
+.sw-stack:before {
+    position:absolute;
+}
 
 .sw-dir:before {content: "A";}
-.sw-list:before {content: "B";}
-.sw-edit:before {content: "C";}
+.sw-calc:before {content: "B";}
+.sw-log:before {content: "C";}
 .sw-prefs:before {content: "D";}
 .sw-exit:before {content: "E";}
 .sw-backward:before {content: "F";}
@@ -68,3 +71,46 @@
 
 .sw-file-unsupported:before {content: "j";}
 .sw-close-all:before {content: "p";}
+.sw-circle-bg:before {
+    content: "q";
+    color: white;
+    /*position: absolute;*/
+}
+.sw-qword:before {content: "r";}
+.sw-dword:before {content: "s";}
+.sw-word:before {content: "t";}
+.sw-byte:before {content: "u";}
+.sw-unchecked:before {content: "v";}
+.sw-checked:before {content: "w";}
+.sw-checked-inv:before {content: "x";}
+
+/*-----COLORS------*/
+.black {color: #000;}
+.gray {color: #92a6a6;}
+.white {color: #fff;}
+.yellow {color: #f0d000;}
+.orange {color: #ffa500;}
+.red {color: #e74c3c;}
+.blue {color: #3498db;}
+.green {color: #27ae60;}
+.magenta {color: #f06292;}
+.violet {color: #9b59b6;}
+.midred{color: #e83346}
+.midgreen{color: #00aa75}
+.midblue{color: #376dba}
+.midbrown{color: #e67e22}
+
+.before-black:before {color: #000;}
+.before-gray:before {color: #92a6a6;}
+.before-white:before {color: #fff;}
+.before-yellow:before {color: #f0d000;}
+.before-orange:before {color: #ffa500;}
+.before-red:before {color: #e74c3c;}
+.before-blue:before {color: #3498db;}
+.before-green:before {color: #27ae60;}
+.before-magenta:before {color: #f06292;}
+.before-violet:before {color: #9b59b6;}
+.before-midred:before {color: #e83346}
+.before-midgreen:before {color: #00aa75}
+.before-midblue:before {color: #376dba}
+.before-midbrown:before {color: #e67e22}
