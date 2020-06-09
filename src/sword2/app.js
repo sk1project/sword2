@@ -114,6 +114,7 @@ class SWord2App extends HtmlElement {
     }
 
     exit() {
+        uc2.quit();
         config.save();
         nwgui.App.quit();
     }

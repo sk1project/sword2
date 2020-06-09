@@ -67,7 +67,6 @@ class DocPresenter extends HtmlElement {
     }
 
     hexSelected(txt) {
-        console.log('===>', txt)
         txt = txt.replace('\n','').replace(' ','').substr(0,16);
         this.binViewer.setValue(txt);
         this.app.dcPlugin.convertHex(txt);
