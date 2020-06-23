@@ -16,6 +16,7 @@
  */
 
 const nwgui = require('nw.gui');
+const {exec} = require("child_process");
 
 //Workaround for global nwjs object access
 global.console = console;
@@ -178,5 +179,9 @@ class SWord2App extends HtmlElement {
 
     setWindowTitle() {
         document.title = this.activeDoc ? `[${this.activeDoc.model.filePath}] - ${config.appName}` : `${config.appName}`;
+    }
+
+    showLogs() {
+        exec(`${config.editor} ~/.config/sword2/${config.python}log.log`);
     }
 }

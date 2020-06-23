@@ -15,9 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {exec, execSync, spawn} = require("child_process");
+const {exec, spawn} = require("child_process");
 const path = require("path");
-const utils = require("../widgets/utils.js");
 
 let UC2PATH = null;
 let rpc = null;

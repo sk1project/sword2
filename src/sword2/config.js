@@ -37,6 +37,8 @@ let mutableConfig = {
     winMinWidth: 1500,
     winMinHeight: 800,
     winMaximized: false,
+    editor: 'gedit',
+    python: 'py2',
 
     save: function () {
         !fs.existsSync(CONFIG_DIR) ? fs.mkdirSync(CONFIG_DIR, {recursive: true}) : null;

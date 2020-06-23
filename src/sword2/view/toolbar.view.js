@@ -19,7 +19,7 @@ exports.view = `
 <div id="toolbar-logo-expander">
     <i id="tb-files-button" title="File browser"></i>
     <i id="tb-convert-button" title="Data type converter"></i>
-    <i id="tb-log-button" class="sw sw-log i32 app-toolbar-button-disabled" title="UniConvertor logs"></i>
+    <i id="tb-log-button" class="sw sw-log i32 app-toolbar-button" onclick="app.showLogs()"  title="UniConvertor logs"></i>
     <i id="tb-prefs-button" class="sw sw-prefs i32 app-toolbar-button-disabled" title="Preferences"></i>
     <i id="tb-exit-button" class="sw sw-exit i32 app-toolbar-button" onclick="app.exit()" title="Quit"></i>
 </div>
