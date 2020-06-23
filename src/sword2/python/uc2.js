@@ -23,55 +23,73 @@ let UC2PATH = null;
 let rpc = null;
 
 class UC2RpcClient {
+    proc = null;
+
     constructor() {
         this.path = __dirname;
-        this.pyexec = path.join(__dirname, 'uc2-zerorpc.py');
-        this.proc = spawn('python2', [this.pyexec, UC2PATH]);
-        this.proc.stdout.on('data', this._stdoutListener.bind(this))
+        this.pyexec = path.join(__dirname, 'uc2-py2.py');
+        this._init()
+    }
+
+    _init() {
+        if (this.proc !== null) {
+            this.proc.stdout.removeAllListeners('data');
+            this.proc.kill();
+        }
         this.callback = null;
         this.queue = [];
         this.buffer = '';
+        this.proc = spawn('python2', [this.pyexec, UC2PATH]);
+        this.proc.stdout.on('data', this._stdoutListener.bind(this));
     }
 
     _execute() {
         if (this.queue.length) {
             this._send(...this.queue.shift());
+            console.log('command sent');
         }
     }
 
-    _send(cmd = 'noop', args = {}, callback = null) {
+    _send(cmd = 'noop', args = [], callback = null) {
         this.buffer = cmd === 'next' ? this.buffer : '';
         this.callback = callback;
-        let chunk = `${cmd}${args !== {} ? ' ' + JSON.stringify(args) : ''}\n`;
-        this.proc.stdin.write(chunk);
+        console.log(JSON.stringify({command:cmd, args:args}));
+        this.proc.stdin.write(JSON.stringify({command:cmd, args:args}) + '\n');
     }
 
-    isEol(txt) {
+    _isEol(txt) {
         return txt.substr(txt.length - 1) === '\n';
     }
 
     _stdoutListener(data) {
         this.buffer += data;
-        if (this.isEol(this.buffer)) {
+        console.log('got response', data);
+        if (this._isEol(this.buffer)) {
             if (this.callback !== null) {
-                let args = JSON.parse(this.buffer);
-                let clbk = null;
-                [clbk, this.callback] = [this.callback, clbk];
-                clbk(...args);
-                this._execute();
+                let callback = this.callback;
+                this.callback = null;
+                let response = JSON.parse(this.buffer);
+                if(!Array.isArray(response)) {
+                    console.log(this.buffer);
+                } else {
+                    callback(...response);
+                    this._execute();
+                }
             }
-        } else {
-            this._send('next', {}, this.callback);
+        } else if (this.callback !== null) {
+            this._send('next', [], this.callback);
         }
     }
 
-    call(cmd = 'noop', args = {}, callback = null) {
+    call(cmd = 'noop', args = [], callback = null) {
         this.queue.push([cmd, args, callback]);
         if (this.callback === null) this._execute();
     }
 
     quit() {
         this.call('quit');
+        this.proc.stdout.removeAllListeners('data');
+        this.proc.kill();
     }
 }
 
@@ -88,25 +106,29 @@ exports.init = function () {
         }
         UC2PATH = stdout;
         rpc = new UC2RpcClient();
-        console.log(rpc);
     });
 }
 
-exports.convertHex = function (hexstring, bigEndian=false) {
-    bigEndian = bigEndian ? 'yes': 'no';
-    return JSON.parse(execSync(path.join(__dirname, `convert.py ${bigEndian} ${hexstring}`)).toString('utf-8'));
+exports.convertHex = function (hexstring, bigEndian = false, callback=null) {
+    rpc.call('convert', [hexstring, bigEndian], callback);
 }
 
-exports.load = function (filePath) {
-    rpc.call('test', {}, console.log);
-    let minPath = filePath.startsWith(utils.HOME) ? filePath.replace(utils.HOME, '~'): filePath;
-    return {...{'fileName': utils.fileName(filePath), 'filePath': minPath}, ...require('../data.js').model()};
+exports.load = function (filePath, callback=null) {
+    rpc.call('load', [filePath], callback);
+}
+
+exports.chunk = function (docId, chunkId, callback=null) {
+    rpc.call('chunk', [docId, chunkId], callback);
+}
+
+exports.close = function (docId, callback=null) {
+    rpc.call('close', [docId], callback);
 }
 
 exports.quit = function () {
     rpc.quit();
 }
 
-exports.call = function (cmd='noop', args={}, calback=null) {
+exports.call = function (cmd = 'noop', args = [], calback = null) {
     rpc.call(cmd, args, calback);
 }

@@ -49,20 +49,27 @@ class DataConvertPlugin extends HtmlElement {
         this.check = el('big-endian-check');
         this.checkIcon = el('big-endian-check-icon');
         this.check.el.onclick = this.switchBigEndian.bind(this);
-        this.convertHex();
+        let hexdict = {};
+        for (let i=0; i<this.opt.fields.length; i++) {
+            hexdict[this.opt.fields[i].type] = '--';
+        }
+        this.convertHex('', hexdict);
     }
 
     switchBigEndian() {
-        console.log('Event!')
         this.opt.bigEndian = !this.opt.bigEndian;
         this.checkIcon.el.className = this.opt.bigEndian ? SELECTED: UNSELECTED;
         this.convertHex(this.hexstring);
     }
 
-    convertHex(hexstring='') {
-        this.hexstring = hexstring;
-        this.hexdict = uc2.convertHex(this.hexstring || '', this.opt.bigEndian);
-        this.render();
+    convertHex(hexstring='', hexdict=null) {
+        if(hexdict===null) {
+            uc2.convertHex(hexstring || '', this.opt.bigEndian, this.convertHex.bind(this));
+        } else {
+            this.hexstring = hexstring;
+            this.hexdict = hexdict;
+            this.render();
+        }
     }
 
     render() {

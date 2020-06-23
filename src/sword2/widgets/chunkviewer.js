@@ -27,17 +27,15 @@ class wHexViewer extends HtmlElement {
     constructor(id, docId, opt = {}) {
         super(id, {...wHexViewer.defaultOptions, ...opt});
         this.docId = docId;
+        this.header = el(`ws-td-chunkview-header-${this.docId}`)
         this.numColumn = el(`hv-td-nums-${this.docId}`);
         this.hexColumn = el(`hv-td-hex-${this.docId}`);
         this.asciiColumn = el(`hv-td-ascii-${this.docId}`);
     }
 
     setChunk(chunk) {
-        let nums = '';
-        for (let i = 0; i < utils.countLines(chunk.chunkAscii); i++) {
-            nums += `0000:` + ((i + 1) * 16).toString(16).padStart(4, '0') + '\n';
-        }
-        this.numColumn.setHtml(`<pre>${nums}</pre>` || '');
+        this.header.setHtml('<pre class="hv-header">0.1.2.3. 4.5.6.7. 8.9.a.b. c.d.e.f.</pre>')
+        this.numColumn.setHtml(`<pre>${chunk.chunkNums}</pre>` || '');
         this.hexColumn.setHtml(`<pre>${chunk.chunkHex}</pre>` || '');
         this.asciiColumn.setHtml(`<pre>${chunk.chunkAscii}</pre>` || '');
     }

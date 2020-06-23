@@ -55,6 +55,7 @@ class SWord2App extends HtmlElement {
         super(id);
         this.mw = null;
         this.activeDoc = null;
+        this.activeDocTemp = null;
         this.docs = [];
 
         this.render();
@@ -131,17 +132,7 @@ class SWord2App extends HtmlElement {
     }
 
     openDoc(filePath) {
-        let doc = null;
-        try {
-            doc = new DocPresenter(this, filePath);
-        } catch (e) {
-            this.log(e);
-            alert(`Error opening:\n${filePath}\n\n${e}\n\nAlso see log file.`);
-            return;
-        }
-        this.activeDoc = doc;
-        this.docs.unshift(doc);
-        events.emit(events.DOC_CHANGED);
+        this.activeDocTemp = new DocPresenter(this, filePath);
     }
 
     closeDoc(doc = null, docId = null) {
@@ -151,6 +142,7 @@ class SWord2App extends HtmlElement {
         if (doc.id === this.activeDoc.id) {
             this.activeDoc = (docIndex === this.docs.length - 1) ? this.docs[docIndex - 1] : this.docs[docIndex + 1];
         }
+        uc2.close(doc.id);
         doc.id = 0;
         this.docs = [...this.docs.filter((doc) => !!doc.id)];
         doc.remove();

@@ -11,7 +11,7 @@
     --app-tab-selected: var(--app-selection-bg) 2px solid;
     --app-selection-fg: #fff;
     --app-scrollbar-track: rgba(0, 0, 0, 0);
-    --app-scrollbar-thumb: #c1c1c1;
+    --app-scrollbar-thumb: var(--app-selection-bg); /*#c1c1c1*/
     --ws-tree-bg: #fff;
     --ws-column-header-fg: #000;
     --ws-column-header-bg: #999 linear-gradient(#999, #555);
@@ -125,9 +125,13 @@ a {
 
 /* SCROLLBAR */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    /*height: 8px;*/
     display: initial;
+}
+
+::-webkit-scrollbar:hover {
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -136,7 +140,9 @@ a {
 
 ::-webkit-scrollbar-thumb {
     background: var(--app-scrollbar-thumb);
-    border-radius: 4px;
+    margin-left: 1px;
+    width: 3px;
+    /*border-radius: 4px;*/
 }
 
 /* SELECTION */
@@ -271,7 +277,7 @@ a {
 
 #app-td-workspace {
     width: auto;
-    background: var(--stub-bg) url('../images/favicon-120.png') no-repeat center center;
+    background: var(--app-bg) url('../images/favicon-120.png') no-repeat center center;
 }
 
 #app-td-plugin-area {
@@ -382,6 +388,15 @@ a.tab-selected i{
 }
 
 /*----Hex viewer-----*/
+.color00 { color: var(--app-fg);}
+.color01 { color: #80ff80;}
+.color02 { color: #ff8080;}
+.color03 { color: #b0b4ff;}
+.color04 { color: #d2d2d2;}
+.color05 { color: #ffff80;}
+.color06 { color: #bafffa;}
+.color07 { color: #f7aeff;}
+
 .chunkview-header {
     padding-left: 0 !important;
 }
@@ -411,6 +426,11 @@ a.tab-selected i{
     min-height: 100%;
 }
 
+.hv-header {
+    color: var(--ws-binview-fg);
+    margin-left: 110px;
+}
+
 .hv-td-nums {
     width: 108px;
     color: var(--ws-binview-fg);
@@ -437,7 +457,7 @@ a.tab-selected i{
 .hv-bin-value {
     color: var(--ws-hv-bivalue-fg);
     margin-left: 5px;
-    font-family: 'Ubuntu Mono', monospace;
+    font-family: monospace !important;
     font-size: 20px;
 }
 

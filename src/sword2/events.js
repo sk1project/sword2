@@ -23,11 +23,8 @@ function connect(channel, callback) {
     channel.push(callback);
 }
 
-function disconnect(channel, callback) {
-    channel.pop(callback);
-}
-
 function emit(channel) {
+    console.log('SIGNAL!');
     channel.forEach(function (callback) {
         setTimeout(callback);
     });
@@ -37,5 +34,4 @@ exports.DOC_CHANGED = DOC_CHANGED;
 exports.NODE_SELECTED = NODE_SELECTED;
 exports.HEX_SELECTED = HEX_SELECTED;
 exports.connect = connect;
-exports.disconnect = disconnect;
 exports.emit = emit;

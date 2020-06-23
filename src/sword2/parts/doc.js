@@ -21,6 +21,7 @@ const {wBinViewer} = require('../widgets/binviewer.js');
 const {wChunkViewer} = require('../widgets/chunkviewer.js');
 const {wTree} = require('../widgets/tree.js');
 const uc2 = require('../python/uc2.js');
+const events = require('../events.js');
 
 class DocPresenter extends HtmlElement {
     static defaultOptions = {
@@ -33,10 +34,20 @@ class DocPresenter extends HtmlElement {
     constructor(app, filePath, opt = {}) {
         super(null, {...DocPresenter.defaultOptions, ...opt});
         this.app = app;
-        this.model = uc2.load(filePath);
+        this.initModel(filePath);
+    }
+
+    initModel(filePath, model=null) {
+        if(model === null) {
+            uc2.load(filePath, this.initModel.bind(this));
+            return;
+        }
+        this.model = model;
+        console.log('model',model);
         this.id = this.model.id;
         this.caption = this.model.fileName;
         this.render();
+        console.log('HERE!')
         this.setTreeCaption(this.model.name);
         this.leftSplitter = new wVSplitter(`left-splitter-${this.id}`,
             {leftTargetId: `ws-td-tree-header-${this.id}`, rightTargetId: `ws-td-chunkview-header-${this.id}`});
@@ -47,6 +58,11 @@ class DocPresenter extends HtmlElement {
             {callbackPrefix: 'app.activeDoc.tree', selectCallback: this.chunkSelected.bind(this)});
         this.tree.setModel(this.model);
         this.leftSplitter.update();
+
+        this.app.activeDoc = this;
+        this.app.docs.unshift(this);
+        this.app.activeDocTemp = null;
+        events.emit(events.DOC_CHANGED);
     }
 
     setTreeCaption(txt) {
@@ -63,7 +79,7 @@ class DocPresenter extends HtmlElement {
 
     chunkSelected(chunk) {
         this.app.ws.updateButtons();
-        this.chunkViewer.setChunk(chunk);
+        uc2.chunk(this.id, chunk.id, this.chunkViewer.setChunk.bind(this.chunkViewer));
     }
 
     hexSelected(txt) {
