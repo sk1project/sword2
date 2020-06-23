@@ -22,6 +22,7 @@ exports.view = function (id) {
         <td id="ws-td-tree-header-${id}" class="view-header ws-td-tree-header"></td>
         <td id="ws-td-chunkview-header-${id}" class="view-header chunkview-header">
             <div id="left-splitter-${id}" class="splitter left-splitter"></div>
+            <div id="chunkview-header-${id}" style="display: inline-block; user-select: none;"></div>
         </td>
     </tr>
     <tr>

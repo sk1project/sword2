@@ -64,7 +64,7 @@ class wFileList extends HtmlElement {
     }
 
     isSupported(filePath) {
-        return this.opt.fileTypes.includes(utils.fileExt(filePath));
+        return this.opt.fileTypes.includes(utils.fileExt(filePath).toLowerCase());
     }
 
     render() {

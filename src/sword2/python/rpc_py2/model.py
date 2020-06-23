@@ -17,16 +17,27 @@
 # 	You should have received a copy of the GNU General Public License
 # 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import logging
 import os
 
 import uc2
 from uc2.formats import get_loader
+
+LOG = logging.getLogger(__name__)
 
 app = uc2.uc2_init()
 
 DOCS = {}
 
 CD = []
+
+
+def _safe_str(txt):
+    if '<' in txt:
+        txt = txt.replace('<', '&lt;')
+    if '>' in txt:
+        txt = txt.replace('>', '&gt;')
+    return txt
 
 
 def _parse_model(el):
@@ -40,7 +51,7 @@ def _parse_model(el):
         icon, title, info, sz = data
     else:
         icon, title, sz = data
-    json_dict['name'] = title
+    json_dict['name'] = _safe_str(title)
     json_dict['node'] = False
     if childs:
         json_dict['marker'] = str(len(childs))
@@ -72,12 +83,14 @@ def load(doc_file=''):
     CD.append(doc)
 
     name = '%s document model' % doc.cid.upper()
-    doc.json_model = {'id': doc_id,
-                      'name': name,
-                      'info_column': False,
-                      'root': _parse_model(doc.model),
-                      'fileName': os.path.basename(doc_file),
-                      'filePath': doc_file.replace(os.path.expanduser('~'), '~')}
+    doc.json_model = dict(id=doc_id,
+                          name=name,
+                          info_column=False,
+                          root=None,
+                          fileName=os.path.basename(doc_file),
+                          filePath=doc_file.replace(os.path.expanduser('~'), '~'))
+
+    doc.json_model['root'] = _parse_model(doc.model)
     CD.remove(doc)
     return [doc_file, doc.json_model]
 
@@ -91,9 +104,11 @@ def insert_string(string, position, substring):
 
 
 def get_char(char):
-    if 32 < ord(char) < 127:
-        return char
-    elif ord(char) < 33:
+    if ord(char) == 0:
+        return '<span class="color00">&curren;</span>'
+    elif 31 < ord(char) < 127:
+        return '&#{};'.format(ord(char))
+    elif ord(char) < 32:
         return '<span class="color00">.</span>'
     elif ord(char) in (141, 144, 157, 160):
         return ''
@@ -103,7 +118,7 @@ def get_char(char):
 
 def chunk(doc_id, el_id):
     formatted_chunk = ''
-    ascii_chunk = b''
+    ascii_chunk = ''
     num_str = ''
     index = 0
     if doc_id in DOCS and el_id in DOCS[doc_id].indexes:
@@ -112,7 +127,7 @@ def chunk(doc_id, el_id):
         raw_chunk = el.chunk.encode('hex')
         for line in split_string(raw_chunk, 32):
             formatted_chunk += ' '.join(split_string(line, 8)) + '\n'
-            ascii_chunk += bytes(''.join([get_char(char) for char in line.decode('hex')]) + "\n")
+            ascii_chunk += ''.join([get_char(char) for char in line.decode('hex')]) + '\n'
 
             major, minor = split_string('%08x' % index, 4)
             num_str += '%s:%s\n' % (major, minor)
@@ -122,6 +137,7 @@ def chunk(doc_id, el_id):
 
         index = 1
         insertions = []
+        LOG.debug(el.cache_fields)
         for item in el.cache_fields:
             start = item[0]
             end = item[0] + item[1]
@@ -133,6 +149,8 @@ def chunk(doc_id, el_id):
                 end -= 1 if len(formatted_chunk) < end else 0
                 insertions.append((start, '<span class="color0{}">'.format(index)))
                 insertions.append((end, '</span>'))
+            else:
+                break
             index = index + 1 if index < 7 else 1
         for position, substring in reversed(insertions):
             formatted_chunk = insert_string(formatted_chunk, position, substring)

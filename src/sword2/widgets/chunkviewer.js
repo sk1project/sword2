@@ -27,7 +27,7 @@ class wHexViewer extends HtmlElement {
     constructor(id, docId, opt = {}) {
         super(id, {...wHexViewer.defaultOptions, ...opt});
         this.docId = docId;
-        this.header = el(`ws-td-chunkview-header-${this.docId}`)
+        this.header = el(`chunkview-header-${this.docId}`)
         this.numColumn = el(`hv-td-nums-${this.docId}`);
         this.hexColumn = el(`hv-td-hex-${this.docId}`);
         this.asciiColumn = el(`hv-td-ascii-${this.docId}`);
