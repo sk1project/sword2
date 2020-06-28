@@ -231,7 +231,7 @@ def get_chunk_report(el):
             val = el.__dict__[tag]
             if tag == 'chunk':
                 v = (val[:20] if len(val) > 20 else val).encode('hex')
-                val = '<span class="green">%s</span>' % repr(v + ('...' if val > 20 else ''))
+                val = '<span class="green">%s</span>' % repr(v + ('...' if len(val) > 20 else ''))
             else:
                 val = create_repr(val)
             html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, val)
