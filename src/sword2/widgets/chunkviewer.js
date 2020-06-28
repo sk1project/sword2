@@ -18,6 +18,9 @@
 const {HtmlElement, el} = require('./base.js');
 const utils = require('./utils.js');
 
+const HEXHEADER = '<pre class="hv-header">0.1.2.3. 4.5.6.7. 8.9.a.b. c.d.e.f.</pre>';
+const REPORTHEADER = '<pre>&nbsp;&nbsp;INTROSPECTION</pre>'
+
 class wHexViewer extends HtmlElement {
     static defaultOptions = {
         selectCallback: null,
@@ -27,14 +30,12 @@ class wHexViewer extends HtmlElement {
     constructor(id, docId, opt = {}) {
         super(id, {...wHexViewer.defaultOptions, ...opt});
         this.docId = docId;
-        this.header = el(`chunkview-header-${this.docId}`)
         this.numColumn = el(`hv-td-nums-${this.docId}`);
         this.hexColumn = el(`hv-td-hex-${this.docId}`);
         this.asciiColumn = el(`hv-td-ascii-${this.docId}`);
     }
 
     setChunk(chunk) {
-        this.header.setHtml('<pre class="hv-header">0.1.2.3. 4.5.6.7. 8.9.a.b. c.d.e.f.</pre>')
         this.numColumn.setHtml(`<pre>${chunk.chunkNums}</pre>` || '');
         this.hexColumn.setHtml(`<pre>${chunk.chunkHex}</pre>` || '');
         this.asciiColumn.setHtml(`<pre>${chunk.chunkAscii}</pre>` || '');
@@ -45,25 +46,56 @@ class wHexViewer extends HtmlElement {
     }
 }
 
+class wReportViewer extends HtmlElement {
+    static defaultOptions = {
+    }
+
+    constructor(id, docId, opt = {}) {
+        super(id, {...wReportViewer.defaultOptions, ...opt});
+        this.docId = docId;
+    }
+
+    setChunk(chunk) {
+        this.setHtml(chunk.report || '');
+    }
+}
+
 class wChunkViewer extends HtmlElement {
     static defaultOptions = {
         selectCallback: null,
+        reportOnly: false,
     }
 
     constructor(id, docId, opt = {}) {
         super(id, {...wChunkViewer.defaultOptions, ...opt});
         this.docId = docId;
         this.chunk = null;
-        this.render()
+        this.hexview = !this.opt.reportOnly;
+        this.render();
+        this.header = el(`chunkview-header-${this.docId}`);
         this.hexViewer = new wHexViewer(`hv-table-${this.docId}`, this.docId,
             {selectCallback: this.opt.selectCallback});
-        this.hexViewer.display(true);
+        this.reportViewer = new wReportViewer(`chunk-report-${this.docId}`, this.docId);
+        this._switch();
+    }
+
+    _switch() {
+        this.header.setHtml(this.hexview ?  HEXHEADER : REPORTHEADER);
+        this.hexViewer.display(this.hexview);
+        this.reportViewer.display(!this.hexview);
     }
 
     setChunk(chunk) {
         this.chunk = chunk;
-        // TODO: switch viewer
-        this.hexViewer.setChunk(this.chunk)
+        this.hexViewer.setChunk(this.chunk);
+        this.reportViewer.setChunk(this.chunk);
+    }
+
+    switchViewer() {
+        if (!this.opt.reportOnly) {
+            this.hexview = !this.hexview;
+            this._switch();
+        }
     }
 
     render() {

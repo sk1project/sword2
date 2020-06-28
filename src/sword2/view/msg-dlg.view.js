@@ -15,19 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-exports.view = function (id) {
+exports.view = function (msg, details='', icon='exclam', iconColor='midred') {
     return `
-<div class="div-scroll-2d">
-    <table id="hv-table-${id}" class="hv-table">
-        <tr>
-            <td id="hv-td-nums-${id}" class="hv-td-nums"></td>
-            <td id="hv-td-hex-${id}" class="hv-td-hex" 
-            onmouseup="app.activeDoc.chunkViewer.hexViewer.hexSelected(getSelectedText())"></td>
-            <td id="hv-td-ascii-${id}" class="hv-td-ascii"></td>
-            <td></td>
-        </tr>
-    </table>
-    <div id="chunk-report-${id}" class="chunk-report"></div>
+<div id="msg-dialog">
+    <div id="msg-dialog-icon"><i class="sw-stack sw-${icon} before-${iconColor} white i48">q</i> </div>
+    <div id="msg-dialog-body">        
+        <b>${msg}</b><br><br>
+        ${details}
+    </div>
+    <a class="dlg-button" onclick="app.hideOverlay()">OK</a> 
 </div>
-`;
+`
 }

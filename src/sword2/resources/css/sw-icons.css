@@ -64,7 +64,7 @@
 .sw-htri:before {content: "X";}
 .sw-vtri:before {content: "Y";}
 .sw-folder:before {content: "Z";}
-.sw-open:before {content: "a";}
+.sw-folder-open:before {content: "a";}
 .sw-doc:before {content: "b";}
 .sw-file:before {content: "c";}
 .sw-image:before {content: "d";}

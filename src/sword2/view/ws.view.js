@@ -40,7 +40,8 @@ exports.view = `
             
             <div class="vline"></div>
             
-            <i id="ws-switch-button" class="sw sw-switch i24 button" title="Change chunk view"></i>
+            <i id="ws-switch-button" class="sw sw-switch i24 button" title="Change chunk view"
+                onclick="app.activeDoc.chunkViewer.switchViewer()"></i>
             
             <div class="vline"></div>
             

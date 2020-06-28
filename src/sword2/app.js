@@ -76,6 +76,7 @@ class SWord2App extends HtmlElement {
                 size: 32, icon: 'calc', class_: 'app-toolbar-button',
                 retval: false, callback: this.switchPlugin.bind(this)
             }))
+        this.overlay = el('overlay');
         events.connect(events.DOC_CHANGED, this.setWindowTitle.bind(this));
     }
 
@@ -112,7 +113,7 @@ class SWord2App extends HtmlElement {
 
     run() {
         setTimeout(this.display.bind(this), 100);
-        uc2.init();
+        uc2.init(this);
     }
 
     exit() {
@@ -183,5 +184,17 @@ class SWord2App extends HtmlElement {
 
     showLogs() {
         exec(`${config.editor} ~/.config/sword2/${config.python}log.log`);
+    }
+
+    showMsgDlg(msg, details='', icon='exclam', iconColor='midred') {
+        this.overlay.display(true);
+        this.el.style.filter = "blur(3px)";
+        this.overlay.setHtml(require('./view/msg-dlg.view.js').view(msg, details, icon, iconColor));
+    }
+
+    hideOverlay() {
+        this.el.style.filter = "blur(0)";
+        this.overlay.display(false);
+        this.overlay.setHtml();
     }
 }

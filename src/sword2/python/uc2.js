@@ -24,7 +24,8 @@ let rpc = null;
 class UC2RpcClient {
     proc = null;
 
-    constructor() {
+    constructor(app) {
+        this.app = app;
         this.path = __dirname;
         this.pyexec = path.join(__dirname, 'uc2-py2.py');
         this._init()
@@ -70,6 +71,7 @@ class UC2RpcClient {
                 let response = JSON.parse(this.buffer);
                 if(!Array.isArray(response)) {
                     console.log(this.buffer);
+                    this.app.showMsgDlg(response.error, response['error details']);
                 } else {
                     callback(...response);
                     this._execute();
@@ -93,7 +95,7 @@ class UC2RpcClient {
 }
 
 
-exports.init = function () {
+exports.init = function (app) {
     exec("uc2 --package-dir", (error, stdout, stderr) => {
         if (error) {
             console.log(`Error: ${error.message}`);
@@ -104,7 +106,7 @@ exports.init = function () {
             return;
         }
         UC2PATH = stdout;
-        rpc = new UC2RpcClient();
+        rpc = new UC2RpcClient(app);
     });
 }
 

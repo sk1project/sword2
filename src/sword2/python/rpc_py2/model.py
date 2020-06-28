@@ -21,11 +21,14 @@ import logging
 import os
 
 import uc2
+from uc2 import uc2const
 from uc2.formats import get_loader
+from uc2.formats.generic import GENERIC_TAGS
 
 LOG = logging.getLogger(__name__)
 
 app = uc2.uc2_init()
+app.init_mngrs()
 
 DOCS = {}
 
@@ -33,6 +36,7 @@ CD = []
 
 
 def _safe_str(txt):
+    txt = str(txt)
     if '<' in txt:
         txt = txt.replace('<', '&lt;')
     if '>' in txt:
@@ -86,6 +90,7 @@ def load(doc_file=''):
     doc.json_model = dict(id=doc_id,
                           name=name,
                           info_column=False,
+                          binary=doc.model_type == uc2const.BINARY_MODEL,
                           root=None,
                           fileName=os.path.basename(doc_file),
                           filePath=doc_file.replace(os.path.expanduser('~'), '~'))
@@ -116,53 +121,135 @@ def get_char(char):
         return '&#{}'.format(ord(char))
 
 
-def chunk(doc_id, el_id):
+def get_binary_chunk(el):
     formatted_chunk = ''
     ascii_chunk = ''
     num_str = ''
     index = 0
+    raw_chunk = el.chunk.encode('hex')
+    for line in split_string(raw_chunk, 32):
+        formatted_chunk += ' '.join(split_string(line, 8)) + '\n'
+        ascii_chunk += ''.join([get_char(char) for char in line.decode('hex')]) + '\n'
+
+        major, minor = split_string('%08x' % index, 4)
+        num_str += '%s:%s\n' % (major, minor)
+        index += 16
+
+    formatted_chunk = formatted_chunk.strip()
+
+    index = 1
+    insertions = []
+    LOG.debug(el.cache_fields)
+    for item in el.cache_fields:
+        start = item[0]
+        end = item[0] + item[1]
+        start_shift = start // 4
+        end_shift = end // 4
+        start = start * 2 + start_shift
+        if start < len(formatted_chunk):
+            end = end * 2 + end_shift
+            end -= 1 if len(formatted_chunk) < end else 0
+            insertions.append((start, '<span class="color0{}">'.format(index)))
+            insertions.append((end, '</span>'))
+        else:
+            break
+        index = index + 1 if index < 7 else 1
+    for position, substring in reversed(insertions):
+        formatted_chunk = insert_string(formatted_chunk, position, substring)
+
+    formatted_chunk += '\n\n'
+    index = 1
+    for item in el.cache_fields:
+        name = item[2] if len(item) > 2 else ''
+        formatted_chunk += '<span class="color0{}">xxxx</span> - {}\n'.format(index, name)
+        index = index + 1 if index < 7 else 1
+
+    return formatted_chunk, ascii_chunk.strip(), num_str.strip()
+
+
+def rpr(val):
+    if isinstance(val, str) or isinstance(val, unicode):
+        res = val[:20] if len(val) > 20 else val
+        try:
+            val = res.encode('utf-8') + ('...' if len(val) > 20 else '')
+        except:
+            val = res.encode('hex') + ('...' if len(val) > 20 else '')
+    return _safe_str(repr(val))
+
+
+def create_repr(value):
+    if isinstance(value, list):
+        return '[%s]' % ',<br> '.join([rpr(val) for val in value])
+    elif isinstance(value, tuple):
+        return '(%s)' % ',<br> '.join([rpr(val) for val in value])
+    elif isinstance(value, dict):
+        return '{%s}' % ',<br> '.join(['%s = %s' % (rpr(key), rpr(val))
+                                       for key, val in value.items()])
+    else:
+        return _safe_str(rpr(value))
+
+
+def get_chunk_report(el):
+    html = '<h2 class="white">Object <i class="yellow">{}</i></h2>'.format(_safe_str(el.resolve()[1]))
+    html += '<b class="orange">{}</b><br><br>'.format(_safe_str(str(el)))
+    if el.__doc__:
+        html += '<ul class="gray">{}</ul>'.format(_safe_str(el.__doc__).replace('\n', '<br>'))
+
+    generic_fields = []
+    obj_fields = []
+    cache_fields = []
+
+    items = el.__dict__.items()
+
+    for item in items:
+        key, value = item
+        if key in GENERIC_TAGS:
+            generic_fields.append(key)
+        elif key.startswith('cache_'):
+            cache_fields.append(key)
+        else:
+            obj_fields.append(key)
+
+    html += '<b>Object generic fields:</b><br>'
+    html += '<table class="info-table"><tr><th class="white">Field</th><th class="white">Value</th></tr>'
+    for tag in generic_fields:
+        html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, create_repr(el.__dict__[tag]))
+    html += '</table><br>'
+
+    if obj_fields:
+        html += '<b>Object regular fields:</b><br>'
+        html += '<table class="info-table"><tr><th class="white">Field</th><th class="white">Value</th></tr>'
+        for tag in obj_fields:
+            val = el.__dict__[tag]
+            if tag == 'chunk':
+                v = (val[:20] if len(val) > 20 else val).encode('hex')
+                val = repr(v + ('...' if val > 20 else ''))
+            else:
+                val = create_repr(val)
+            html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, val)
+        html += '</table><br>'
+
+    if cache_fields:
+        html += '<b>Object caching fields:</b><br>'
+        html += '<table class="info-table"><tr><th class="white">Field</th><th class="white">Value</th></tr>'
+        for tag in cache_fields:
+            html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, create_repr(el.__dict__[tag]))
+        html += '</table><br>'
+    return html
+
+
+def chunk(doc_id, el_id):
+    formatted_chunk = ''
+    ascii_chunk = ''
+    num_str = ''
+    report = ''
     if doc_id in DOCS and el_id in DOCS[doc_id].indexes:
         el = DOCS[doc_id].indexes[el_id]
+        if DOCS[doc_id].model_type == uc2const.BINARY_MODEL:
+            formatted_chunk, ascii_chunk, num_str = get_binary_chunk(el)
+        report = get_chunk_report(el)
 
-        raw_chunk = el.chunk.encode('hex')
-        for line in split_string(raw_chunk, 32):
-            formatted_chunk += ' '.join(split_string(line, 8)) + '\n'
-            ascii_chunk += ''.join([get_char(char) for char in line.decode('hex')]) + '\n'
-
-            major, minor = split_string('%08x' % index, 4)
-            num_str += '%s:%s\n' % (major, minor)
-            index += 16
-
-        formatted_chunk = formatted_chunk.strip()
-
-        index = 1
-        insertions = []
-        LOG.debug(el.cache_fields)
-        for item in el.cache_fields:
-            start = item[0]
-            end = item[0] + item[1]
-            start_shift = start // 4
-            end_shift = end // 4
-            start = start * 2 + start_shift
-            if start < len(formatted_chunk):
-                end = end * 2 + end_shift
-                end -= 1 if len(formatted_chunk) < end else 0
-                insertions.append((start, '<span class="color0{}">'.format(index)))
-                insertions.append((end, '</span>'))
-            else:
-                break
-            index = index + 1 if index < 7 else 1
-        for position, substring in reversed(insertions):
-            formatted_chunk = insert_string(formatted_chunk, position, substring)
-
-        formatted_chunk += '\n\n'
-        index = 1
-        for item in el.cache_fields:
-            name = item[2] if len(item) > 2 else ''
-            formatted_chunk += '<span class="color0{}">xxxx</span> - {}\n'.format(index, name)
-            index = index + 1 if index < 7 else 1
-
-    return [{'chunkHex': formatted_chunk, 'chunkAscii': ascii_chunk.strip(), 'chunkNums': num_str.strip()}]
+    return [{'chunkHex': formatted_chunk, 'chunkAscii': ascii_chunk, 'chunkNums': num_str, 'report': report}]
 
 
 def close(doc_id):

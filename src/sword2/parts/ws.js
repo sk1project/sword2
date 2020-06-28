@@ -29,6 +29,7 @@ class pWorkSpace extends HtmlElement {
         this.tabs = new pTabs(this.app, 'ws-tabs-div');
         this.backBtn = new wButton('ws-backward-button', {icon: 'backward'});
         this.forwardBtn = new wButton('ws-forward-button', {icon: 'forward'});
+        this.switchBtn = new wButton('ws-switch-button', {icon: 'switch'});
         events.connect(events.DOC_CHANGED, this.update.bind(this));
     }
 
@@ -45,9 +46,11 @@ class pWorkSpace extends HtmlElement {
         if(this.app.activeDoc) {
             this.backBtn.setEnabled(this.app.activeDoc.tree.history.back.length);
             this.forwardBtn.setEnabled(this.app.activeDoc.tree.history.forward.length);
+            this.switchBtn.setEnabled(this.app.activeDoc.model.binary);
         } else {
             this.backBtn.disable();
             this.forwardBtn.disable();
+            this.switchBtn.disable();
         }
     }
 }

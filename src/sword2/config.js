@@ -23,7 +23,6 @@ const HOME = os.homedir();
 const CONFIG_DIR = path.join(HOME, '.config', 'sword2');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 
-// TODO: portable version
 
 const staticConfig = {
     appName: 'SWord 2.0',

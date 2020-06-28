@@ -23,6 +23,7 @@ const {wTree} = require('../widgets/tree.js');
 const uc2 = require('../python/uc2.js');
 const events = require('../events.js');
 
+
 class DocPresenter extends HtmlElement {
     static defaultOptions = {
         deferred: true,
@@ -43,20 +44,20 @@ class DocPresenter extends HtmlElement {
             return;
         }
         this.model = model;
-        console.log('model',model);
+        // console.log('model',model);
         this.id = this.model.id;
         this.caption = this.model.fileName;
         this.render();
-        console.log('HERE!')
         this.setTreeCaption(this.model.name);
         this.leftSplitter = new wVSplitter(`left-splitter-${this.id}`,
             {leftTargetId: `ws-td-tree-header-${this.id}`, rightTargetId: `ws-td-chunkview-header-${this.id}`});
         this.binViewer = new wBinViewer(`hv-bin-value-${this.id}`);
         this.chunkViewer = new wChunkViewer(`ws-td-chunkview-${this.id}`, this.id,
-            {selectCallback: this.hexSelected.bind(this)});
+            {selectCallback: this.hexSelected.bind(this), reportOnly: !this.model.binary});
         this.tree = new wTree(`ws-td-tree-${this.id}`,
             {callbackPrefix: 'app.activeDoc.tree', selectCallback: this.chunkSelected.bind(this)});
         this.tree.setModel(this.model);
+        // console.log('HERE!');
         this.leftSplitter.update();
 
         this.app.activeDoc = this;

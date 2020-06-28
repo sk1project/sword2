@@ -47,6 +47,7 @@
     --row-height: 36px;
     --icon-size: 22px;
     --row-alt-bg: #dae3f5;
+    --overlay-bg: rgba(1, 1, 1, 0.2);
 }
 
 html, body {
@@ -126,13 +127,13 @@ a {
 /* SCROLLBAR */
 ::-webkit-scrollbar {
     width: 4px;
-    /*height: 8px;*/
     display: initial;
+    cursor: pointer;
 }
 
-::-webkit-scrollbar:hover {
-    width: 10px;
-}
+/*:hover::-webkit-scrollbar {*/
+/*    width: 10px;*/
+/*}*/
 
 ::-webkit-scrollbar-track {
     background: var(--app-scrollbar-track);
@@ -142,7 +143,6 @@ a {
     background: var(--app-scrollbar-thumb);
     margin-left: 1px;
     width: 3px;
-    /*border-radius: 4px;*/
 }
 
 /* SELECTION */
@@ -183,6 +183,10 @@ a {
 
 #overlay {
     position: absolute;
+    background: var(--overlay-bg);
+    top: 0;
+    left: 0;
+    text-align: center;
 }
 
 #app, #overlay {
@@ -405,12 +409,16 @@ a.tab-selected i{
     background: var(--ws-hexview-bg);
 }
 
-.div-scroll {
+.div-scroll, .div-scroll-2d {
     overflow-x: hidden;
     overflow-y: auto;
     width: 100%;
     height: 100%;
     position: relative;
+}
+
+.div-scroll-2d {
+    overflow-x: auto;
 }
 
 .ws-td-binview {
@@ -503,6 +511,26 @@ a.tab-selected i{
     background: var(--fb-view-bg);
 }
 
+.chunk-report {
+    display: none;
+    padding: 10px;
+}
+
+table.info-table {
+    width: auto;
+    border: var(--app-panel-border);
+    margin: 10px 0;
+}
+
+table.info-table td, table.info-table th {
+    padding: 10px;
+    border: var(--app-panel-border);
+}
+
+table.info-table th {
+    background: var(--app-bg);
+}
+
 /*------------------WIDGETS------------------*/
 
 /*-----Button-----*/
@@ -582,6 +610,9 @@ div.tree-node span.tree-node-text, div.tree-leaf span.tree-node-text {
     color: black;
     vertical-align: top;
     line-height: var(--row-height);
+    text-overflow: ellipsis;
+    max-width: calc(100% - 36px);
+    white-space: nowrap;
 }
 
 div.tree-node span i, div.tree-leaf span i {
@@ -664,6 +695,7 @@ div.tree-leaf-ocl {
 
 #fl-table td.filename {
     width: 100%;
+    padding-left: 0;
 }
 
 #fl-table td.filename div {
@@ -748,4 +780,43 @@ div.tree-leaf-ocl {
 #dc-values-table th:nth-child(even) {
     border-left: var(--app-panel-border);
     width: 100%;
+}
+
+#msg-dialog {
+    display: inline-block;
+    min-width: 500px;
+    height: 150px;
+    border: var(--app-border-color) 1px solid;
+    background: var(--app-bg);
+    margin: calc(50vh - 150px) auto auto;
+    filter: drop-shadow(0 0 0.75rem black);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#msg-dialog-body {
+    height: calc(100% - 80px);
+    padding: 20px 20px 20px 0;
+    text-align: left;
+}
+
+a.dlg-button {
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    text-align: center;
+    background: var(--app-border-color);
+}
+
+a.dlg-button:hover {
+    color: var(--app-selection-fg);
+}
+
+a.dlg-button:active {
+    background:  var(--app-selection-bg);
+}
+
+#msg-dialog-icon {
+    float: left;
+    margin: 20px;
 }

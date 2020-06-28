@@ -32,7 +32,6 @@ class HtmlElement extends OptObject {
 
     constructor(id, opt = {}) {
         super({...HtmlElement.defaultOptions, ...opt});
-        this.log = console.log;
         this.document = mainDocument;
         this.mw = mainWindow;
         this.id = id;

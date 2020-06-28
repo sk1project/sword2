@@ -36,9 +36,7 @@ class wTree extends HtmlElement {
     }
 
     goBack() {
-        this.log('BACK');
         if(this.history.back.length) {
-            this.log('BACK');
             let item =  this.history.back.pop();
             this.history.forward.push(this.selected);
             let fw = this.history.forward;
@@ -51,7 +49,6 @@ class wTree extends HtmlElement {
 
     goForward() {
         if(this.history.forward.length) {
-            this.log('FORWARD');
             let item =  this.history.forward.pop();
             let fw = this.history.forward;
             this.forwarded = true;
@@ -74,7 +71,8 @@ class wTree extends HtmlElement {
         this.clear();
         this.render();
         this.collapseAll();
-        wTree.expand(this.root);
+        if (this.model.hasOwnProperty('root') && this.model.root.hasOwnProperty('childs'))
+            wTree.expand(this.root);
         this.selectRoot();
     }
 
@@ -85,11 +83,17 @@ class wTree extends HtmlElement {
     static expand(nodeId) {
         el('grp' + nodeId).display(true);
         el('tree-ocl-' + nodeId).el.className = 'sw sw-vtri black';
+        let icon = el('tree-icon-' + nodeId);
+        icon.el.className = icon.el.className.replace('sw-folder ','sw-folder-open ');
+        console.log('expanded', nodeId);
     }
 
     static collapse(nodeId) {
         el('grp' + nodeId).display(false);
         el('tree-ocl-' + nodeId).el.className = 'sw sw-htri black';
+        let icon = el('tree-icon-' + nodeId);
+        icon.el.className = icon.el.className.replace('sw-folder-open ','sw-folder ');
+        console.log('collapsed', nodeId);
     }
 
     expandAll() {
@@ -147,7 +151,7 @@ class wTree extends HtmlElement {
                 `<i id="tree-ocl-${_id}" class="sw sw-vtri black" ${ocl_clbk}></i>` +           // ocl
                 `<span id="tree-label-${_id}" class="tree-node-text">` +                        // item span
                 `<i id="tree-icon-${_id}" class="${icon}"></i>` +                               // item icon
-                `${obj['name']}</span>${marker}${info}</div>` +                                 // text, marker, info
+                `${obj['name']}${marker}</span>${info}</div>` +                                 // text, marker, info
                 `<div id="grp${_id}" class="tree-group">` + html + '</div>';                    // inner container
         } else {
             let icon = `sw sw-${obj.hasOwnProperty('icon') ? obj['icon'] : 'file'}`;
@@ -157,9 +161,8 @@ class wTree extends HtmlElement {
                 `<div class="tree-leaf-ocl"></div>` +                                           // ocl stub
                 `<span id="tree-label-${_id}" class="tree-node-text">` +                        // item span
                 `<i id="tree-icon-${_id}" class="${icon}"></i>` +                               // item icon
-                `${obj['name']}</span>${marker}${info}</div>`;                                  // text, marker, info
+                `${obj['name']}${marker}</span>${info}</div>`;                                  // text, marker, info
         }
-
         return html;
     }
 
@@ -167,6 +170,13 @@ class wTree extends HtmlElement {
         el('grp' + nodeId).switchDisplay();
         let ocl = el('tree-ocl-' + nodeId);
         ocl.el.className = ocl.el.className.includes('-vtri') ? 'sw sw-htri black' : 'sw sw-vtri black';
+        let icon = el('tree-icon-' + nodeId);
+        let icon_class = icon.el.className;
+        if(icon_class.includes('sw-folder ')) {
+            icon.el.className = icon_class.replace('sw-folder ','sw-folder-open ');
+        } else if(icon_class.includes('sw-folder-open ')) {
+            icon.el.className = icon_class.replace('sw-folder-open ','sw-folder ');
+        }
     }
 
     nodeSelected(node_id = null) {
