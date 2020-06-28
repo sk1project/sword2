@@ -23,7 +23,8 @@ import os
 import uc2
 from uc2 import uc2const
 from uc2.formats import get_loader
-from uc2.formats.generic import GENERIC_TAGS
+from uc2.formats.generic import GENERIC_TAGS, ModelObject
+from uc2.utils.config import XmlConfigParser
 
 LOG = logging.getLogger(__name__)
 
@@ -174,24 +175,31 @@ def rpr(val):
             val = res.encode('utf-8') + ('...' if len(val) > 20 else '')
         except:
             val = res.encode('hex') + ('...' if len(val) > 20 else '')
+        return '<span class="color01">%s</span>' % _safe_str(repr(val))
+    elif isinstance(val, ModelObject):
+        return '<span class="violet">%s</span>' % _safe_str(repr(val))
+    elif isinstance(val, XmlConfigParser):
+        return _safe_str(repr(val))
+    elif isinstance(val, int):
+        return '<span class="blue">%s</span>' % repr(val)
     return _safe_str(repr(val))
 
 
 def create_repr(value):
     if isinstance(value, list):
-        return '[%s]' % ',<br> '.join([rpr(val) for val in value])
+        return '[%s]' % ',<br> '.join([create_repr(val) for val in value])
     elif isinstance(value, tuple):
-        return '(%s)' % ',<br> '.join([rpr(val) for val in value])
+        return '(%s)' % ', '.join([create_repr(val) for val in value])
     elif isinstance(value, dict):
-        return '{%s}' % ',<br> '.join(['%s = %s' % (rpr(key), rpr(val))
+        return '{%s}' % ',<br> '.join(['<span class="lightgray">%s</span>: %s' % (repr(key), create_repr(val))
                                        for key, val in value.items()])
     else:
-        return _safe_str(rpr(value))
+        return rpr(value)
 
 
 def get_chunk_report(el):
     html = '<h2 class="white">Object <i class="yellow">{}</i></h2>'.format(_safe_str(el.resolve()[1]))
-    html += '<b class="orange">{}</b><br><br>'.format(_safe_str(str(el)))
+    html += '<b class="midbrown">{}</b><br><br>'.format(_safe_str(str(el)))
     if el.__doc__:
         html += '<ul class="gray">{}</ul>'.format(_safe_str(el.__doc__).replace('\n', '<br>'))
 
@@ -223,7 +231,7 @@ def get_chunk_report(el):
             val = el.__dict__[tag]
             if tag == 'chunk':
                 v = (val[:20] if len(val) > 20 else val).encode('hex')
-                val = repr(v + ('...' if val > 20 else ''))
+                val = '<span class="green">%s</span>' % repr(v + ('...' if val > 20 else ''))
             else:
                 val = create_repr(val)
             html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, val)

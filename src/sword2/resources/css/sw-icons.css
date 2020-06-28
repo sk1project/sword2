@@ -86,6 +86,7 @@
 
 /*-----COLORS------*/
 .black {color: #000;}
+.lightgray {color: #aeb5bd;}
 .gray {color: #92a6a6;}
 .white {color: #fff;}
 .yellow {color: #f0d000;}
@@ -94,7 +95,7 @@
 .blue {color: #3498db;}
 .green {color: #27ae60;}
 .magenta {color: #f06292;}
-.violet {color: #9b59b6;}
+.violet {color: #8786c0;}
 .midred{color: #e83346}
 .midgreen{color: #00aa75}
 .midblue{color: #376dba}
@@ -109,7 +110,7 @@
 .before-blue:before {color: #3498db;}
 .before-green:before {color: #27ae60;}
 .before-magenta:before {color: #f06292;}
-.before-violet:before {color: #9b59b6;}
+.before-violet:before {color: #8786c0;}
 .before-midred:before {color: #e83346}
 .before-midgreen:before {color: #00aa75}
 .before-midblue:before {color: #376dba}

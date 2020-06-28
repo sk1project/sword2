@@ -393,7 +393,7 @@ a.tab-selected i{
 
 /*----Hex viewer-----*/
 .color00 { color: var(--app-fg);}
-.color01 { color: #80ff80;}
+.color01 { color: #a5c261;}
 .color02 { color: #ff8080;}
 .color03 { color: #b0b4ff;}
 .color04 { color: #d2d2d2;}
