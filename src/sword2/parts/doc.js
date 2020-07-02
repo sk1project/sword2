@@ -44,7 +44,6 @@ class DocPresenter extends HtmlElement {
             return;
         }
         this.model = model;
-        // console.log('model',model);
         this.id = this.model.id;
         this.caption = this.model.fileName;
         this.render();
@@ -57,12 +56,10 @@ class DocPresenter extends HtmlElement {
         this.tree = new wTree(`ws-td-tree-${this.id}`,
             {callbackPrefix: 'app.activeDoc.tree', selectCallback: this.chunkSelected.bind(this)});
         this.tree.setModel(this.model);
-        // console.log('HERE!');
         this.leftSplitter.update();
 
         this.app.activeDoc = this;
         this.app.docs.unshift(this);
-        this.app.activeDocTemp = null;
         events.emit(events.DOC_CHANGED);
     }
 

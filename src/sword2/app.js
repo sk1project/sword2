@@ -56,7 +56,7 @@ class SWord2App extends HtmlElement {
         super(id);
         this.mw = null;
         this.activeDoc = null;
-        this.activeDocTemp = null;
+        this.dlg = null;
         this.docs = [];
 
         this.render();
@@ -134,7 +134,7 @@ class SWord2App extends HtmlElement {
     }
 
     openDoc(filePath) {
-        this.activeDocTemp = new DocPresenter(this, filePath);
+        new DocPresenter(this, filePath);
     }
 
     closeDoc(doc = null, docId = null) {
@@ -183,7 +183,7 @@ class SWord2App extends HtmlElement {
     }
 
     showLogs() {
-        exec(`${config.editor} ~/.config/sword2/${config.python}log.log`);
+        exec(`${config.editor} ~/.config/sword2/python.log`);
     }
 
     showMsgDlg(msg, details='', icon='exclam', iconColor='midred') {
