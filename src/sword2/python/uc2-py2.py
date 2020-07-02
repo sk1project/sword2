@@ -40,7 +40,7 @@ import rpc_py2
 logging.basicConfig(
     format='%(asctime)s | %(levelname)-7s | %(name)s | %(message)s',
     level=logging.DEBUG,
-    filename=os.path.expanduser('~/.config/sword2/py2log.log'),
+    filename=os.path.expanduser('~/.config/sword2/python.log'),
     filemode='w',
     stream=sys.stderr, )
 LOG = logging.getLogger(__name__)
