@@ -35,6 +35,8 @@ DOCS = {}
 
 CD = []
 
+TRUNCATE_SIZE = 50
+
 
 def _safe_str(txt):
     txt = str(txt)
@@ -170,11 +172,11 @@ def get_binary_chunk(el):
 
 def rpr(val):
     if isinstance(val, str) or isinstance(val, unicode):
-        res = val[:20] if len(val) > 20 else val
+        res = val[:TRUNCATE_SIZE] if len(val) > TRUNCATE_SIZE else val
         try:
-            val = res.encode('utf-8') + ('...' if len(val) > 20 else '')
+            val = res.encode('utf-8') + ('...' if len(val) > TRUNCATE_SIZE else '')
         except:
-            val = res.encode('hex') + ('...' if len(val) > 20 else '')
+            val = res.encode('hex') + ('...' if len(val) > TRUNCATE_SIZE else '')
         return '<span class="color01">%s</span>' % _safe_str(repr(val))
     elif isinstance(val, ModelObject):
         return '<span class="violet">%s</span>' % _safe_str(repr(val))
@@ -227,11 +229,12 @@ def get_chunk_report(el):
     if obj_fields:
         html += '<b>Object regular fields:</b><br>'
         html += '<table class="info-table"><tr><th class="white">Field</th><th class="white">Value</th></tr>'
-        for tag in obj_fields:
+        for tag in sorted(obj_fields):
             val = el.__dict__[tag]
-            if tag == 'chunk':
-                v = (val[:20] if len(val) > 20 else val).encode('hex')
-                val = '<span class="green">%s</span>' % repr(v + ('...' if len(val) > 20 else ''))
+            if tag in ['chunk', 'valbytes', 'valbytes2']:
+                v, suffix = (val[:10], '...') if len(val) > 10 else (val, '')
+                v = '\\x' + '\\x'.join([char.encode('hex') for char in v]) + suffix
+                val = '<span class="green">\'%s\'</span>' % v
             else:
                 val = create_repr(val)
             html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, val)
@@ -240,7 +243,7 @@ def get_chunk_report(el):
     if cache_fields:
         html += '<b>Object caching fields:</b><br>'
         html += '<table class="info-table"><tr><th class="white">Field</th><th class="white">Value</th></tr>'
-        for tag in cache_fields:
+        for tag in sorted(cache_fields):
             html += '<tr><td>{}</td><td>{}</td></tr>'.format(tag, create_repr(el.__dict__[tag]))
         html += '</table><br>'
     return html
