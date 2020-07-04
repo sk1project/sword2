@@ -36,6 +36,7 @@ DOCS = {}
 CD = []
 
 TRUNCATE_SIZE = 50
+HEX_TRUNCATE_SIZE = 10
 
 
 def _safe_str(txt):
@@ -172,12 +173,15 @@ def get_binary_chunk(el):
 
 def rpr(val):
     if isinstance(val, str) or isinstance(val, unicode):
-        res = val[:TRUNCATE_SIZE] if len(val) > TRUNCATE_SIZE else val
         try:
-            val = res.encode('utf-8') + ('...' if len(val) > TRUNCATE_SIZE else '')
-        except:
-            val = res.encode('hex') + ('...' if len(val) > TRUNCATE_SIZE else '')
-        return '<span class="color01">%s</span>' % _safe_str(repr(val))
+            res = val[:TRUNCATE_SIZE] if len(val) > TRUNCATE_SIZE else val
+            suffix = '...' if len(val) > TRUNCATE_SIZE else ''
+            val = res.encode('utf-8') + suffix
+            return '<span class="color01">%s</span>' % _safe_str(repr(val))
+        except UnicodeDecodeError:
+            v, suffix = (val[:HEX_TRUNCATE_SIZE], '...') if len(val) > HEX_TRUNCATE_SIZE else (val, '')
+            v = '\\x' + '\\x'.join([char.encode('hex') for char in v]) + suffix
+            return '<span class="green">\'%s\'</span>' % v
     elif isinstance(val, ModelObject):
         return '<span class="violet">%s</span>' % _safe_str(repr(val))
     elif isinstance(val, XmlConfigParser):
@@ -232,7 +236,7 @@ def get_chunk_report(el):
         for tag in sorted(obj_fields):
             val = el.__dict__[tag]
             if tag in ['chunk', 'valbytes', 'valbytes2']:
-                v, suffix = (val[:10], '...') if len(val) > 10 else (val, '')
+                v, suffix = (val[:HEX_TRUNCATE_SIZE], '...') if len(val) > HEX_TRUNCATE_SIZE else (val, '')
                 v = '\\x' + '\\x'.join([char.encode('hex') for char in v]) + suffix
                 val = '<span class="green">\'%s\'</span>' % v
             else:
