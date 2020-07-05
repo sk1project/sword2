@@ -15,27 +15,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-const {wDialog} = require('../dialogs/dialog.js');
+const {HtmlElement} = require('../widgets/base.js');
 
 
-class msgDialog extends wDialog {
+class wDialog extends HtmlElement {
     static defaultOptions = {
         callback: null,
-        icon: 'exclam',
-        iconColor: 'midred',
-        msg: '',
-        details: '',
+        icon: 'quest',
+        title: '',
     }
 
-    constructor(app, opt = {}) {
-        super(app, 'msg-dialog', {...msgDialog.defaultOptions, ...opt});
+    constructor(app, id='dialog', opt = {}) {
+        super(id, {...wDialog.defaultOptions, ...opt});
+        this.app = app;
+    }
+
+    run() {
+        this.app.overlay.display(true);
+        this.app.el.style.filter = "blur(3px)";
+        this.build();
     }
 
     build() {
-        this.app.overlay.setHtml(
-            require('../view/msg-dlg.view.js').view(
-                this.opt.msg, this.opt.details, this.opt.icon, this.opt.iconColor));
+        // The method should be overridden in subclass
+    }
+
+    close() {
+        this.app.dlg = null;
+        this.app.el.style.filter = "blur(0)";
+        this.app.overlay.display(false);
+        this.app.overlay.setHtml();
     }
 }
 
-exports.msgDialog = msgDialog;
+exports.wDialog = wDialog;

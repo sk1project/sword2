@@ -35,6 +35,8 @@ const {FileBrowserPlugin} = require('./plugins/file-browser.js');
 const {DataConvertPlugin} = require('./plugins/data-convert.js');
 const events = require('./events.js');
 const uc2 = require('./python/uc2.js');
+const {msgDialog} = require('./dialogs/msg-dlg.js');
+const {PrefsDialog} = require('./dialogs/prefs-dialog');
 
 let app = null;
 
@@ -112,7 +114,7 @@ class SWord2App extends HtmlElement {
     }
 
     run() {
-        setTimeout(this.display.bind(this), 100);
+        setTimeout(this.display.bind(this), 500);
         uc2.init(this);
     }
 
@@ -187,14 +189,12 @@ class SWord2App extends HtmlElement {
     }
 
     showMsgDlg(msg, details='', icon='exclam', iconColor='midred') {
-        this.overlay.display(true);
-        this.el.style.filter = "blur(3px)";
-        this.overlay.setHtml(require('./view/msg-dlg.view.js').view(msg, details, icon, iconColor));
+        this.dlg = new msgDialog(this, {msg:msg, details:details, icon:icon, iconColor:iconColor});
+        this.dlg.run();
     }
 
-    hideOverlay() {
-        this.el.style.filter = "blur(0)";
-        this.overlay.display(false);
-        this.overlay.setHtml();
+    showPrefsDlg(){
+        this.dlg = new PrefsDialog(this, config);
+        this.dlg.run();
     }
 }

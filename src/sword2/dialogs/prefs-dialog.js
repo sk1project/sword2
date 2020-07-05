@@ -15,27 +15,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+
 const {wDialog} = require('../dialogs/dialog.js');
 
 
-class msgDialog extends wDialog {
+class PrefsDialog extends wDialog {
     static defaultOptions = {
         callback: null,
-        icon: 'exclam',
-        iconColor: 'midred',
-        msg: '',
+        icon: 'prefs',
+        iconColor: 'selection-bg-color',
+        msg: 'PREFERENCES',
         details: '',
     }
 
-    constructor(app, opt = {}) {
-        super(app, 'msg-dialog', {...msgDialog.defaultOptions, ...opt});
+    constructor(app, config, opt = {}) {
+        super(app, 'prefs-dialog', {...PrefsDialog.defaultOptions, ...opt});
+        this.config = config;
     }
 
     build() {
         this.app.overlay.setHtml(
-            require('../view/msg-dlg.view.js').view(
-                this.opt.msg, this.opt.details, this.opt.icon, this.opt.iconColor));
+            require('../view/prefs-dlg.view.js').view(
+                this.opt.msg, this.opt.icon, this.opt.iconColor));
     }
 }
 
-exports.msgDialog = msgDialog;
+exports.PrefsDialog = PrefsDialog;

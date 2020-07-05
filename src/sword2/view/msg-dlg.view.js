@@ -23,7 +23,7 @@ exports.view = function (msg, details='', icon='exclam', iconColor='midred') {
         <b>${msg}</b><br><br>
         ${details}
     </div>
-    <a class="dlg-button" onclick="app.hideOverlay()">OK</a> 
+    <a class="dlg-button" onclick="app.dlg.close()">OK</a> 
 </div>
 `
 }

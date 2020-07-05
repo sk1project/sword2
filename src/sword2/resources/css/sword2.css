@@ -1,4 +1,6 @@
 :root {
+    --app-font-family: 'Ubuntu', sans-serif;
+    --app-font-size: 16px;
     --stub-bg: #333;
     --app-bg: #313335;
     --app-panel-bg: #3c3f41;
@@ -48,11 +50,19 @@
     --icon-size: 22px;
     --row-alt-bg: #dae3f5;
     --overlay-bg: rgba(1, 1, 1, 0.2);
+    --dlg-button-fg: var(--app-fg);
+    --dlg-button-bg: var(--app-border-color);
+    --dlg-button-hover-fg: var(--button-hover-fg);
+    --dlg-button-hover-bg: var(--button-hover-bg);
+    --dlg-button-pressed-fg: var(--app-selection-fg);
+    --dlg-button-pressed-bg: var(--app-selection-bg);
+    --text-field-fg: var(--app-fg);
+    --text-field-bg: var(--ws-hexview-bg);
 }
 
 html, body {
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 16px;
+    font-family: var(--app-font-family);
+    font-size: var(--app-font-size);
     height: 100vh;
     width: 100vw;
     background: var(--app-bg);
@@ -782,10 +792,10 @@ div.tree-leaf-ocl {
     width: 100%;
 }
 
-#msg-dialog {
+#msg-dialog, #prefs-dialog {
     display: inline-block;
     min-width: 500px;
-    height: 150px;
+    min-height: 140px;
     border: var(--app-border-color) 1px solid;
     background: var(--app-bg);
     margin: calc(50vh - 150px) auto auto;
@@ -803,20 +813,63 @@ div.tree-leaf-ocl {
 a.dlg-button {
     height: 40px;
     line-height: 40px;
-    display: block;
+    display: inline-block;
+    width: 100%;
     text-align: center;
-    background: var(--app-border-color);
+    color: var(--dlg-button-fg);
+    background: var(--dlg-button-bg);
+}
+
+a.not-first {
+    border-left: #2b2b2b 1px solid;
 }
 
 a.dlg-button:hover {
-    color: var(--app-selection-fg);
+    color: var(--dlg-button-hover-fg);
+    background: var(--dlg-button-hover-bg);
 }
 
 a.dlg-button:active {
-    background:  var(--app-selection-bg);
+    color: var(--dlg-button-pressed-fg);
+    background:  var(--dlg-button-pressed-bg);
 }
 
 #msg-dialog-icon {
     float: left;
     margin: 20px;
+}
+
+/*PREFS DIALOG*/
+#prefs-dialog {
+    margin: calc(50vh - 250px) auto auto;
+}
+
+
+/*input[type="text"]*/
+.text-field {
+    background: var(--ws-hexview-bg);
+    color: var(--app-fg);
+    border: var(--app-panel-border);
+    padding: 5px;
+    font-size: var(--app-font-size);
+    font-family: var(--app-font-family);
+}
+
+.text-field:focus {
+    outline: none !important;
+    border-color: var(--app-selection-bg);
+    box-shadow: 0 0 10px var(--app-selection-bg);
+}
+
+.text-field::selection {
+    color: var(--app-selection-fg);
+    background: var(--app-selection-bg);
+}
+
+#table-dlg-body {
+    width: auto;
+}
+
+#table-dlg-body td {
+    padding: 10px;
 }
