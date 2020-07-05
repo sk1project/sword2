@@ -24,12 +24,12 @@ exports.view = function (msg, icon='exclam', iconColor='midred') {
         <table id="table-dlg-body">
             <tr>
                 <td>Log viewer:</td>
-                <td><input type="text" size="30" class="text-field"></td>
+                <td><input type="text" size="30" class="text-field" id="prefs-log-viewer"></td>
             </tr>
             <tr>
                 <td>Backend:</td>
                 <td>
-                    <select id="backend" class="text-field" style="width:100%">
+                    <select class="text-field" style="width:100%" id="prefs-backend">
                       <option value="py2">Python 2</option>
                       <option value="py3">Python 3</option>
                     </select>
@@ -42,25 +42,24 @@ exports.view = function (msg, icon='exclam', iconColor='midred') {
             </tr>
             <tr>
                 <td>Width:</td>
-                <td><input type="number" step="10" class="text-field" style="width: 100px"> px</td>
+                <td><input type="number" step="10" class="text-field" style="width: 100px" id="prefs-app-width"> px</td>
             </tr>
             <tr>
                 <td>Height:</td>
-                <td><input type="number" step="10" class="text-field" style="width: 100px"> px</td>
+                <td><input type="number" step="10" class="text-field" style="width: 100px" id="prefs-app-height"> px</td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <a id="big-endian-check" class="checkbutton" href="#">
-                    <i id="big-endian-check-icon" class="sw-stack sw-unchecked before-border-color bg-color">q</i>
-                    Maximize application window</a>
+                    <input type="checkbox" class="custom-checkbox" id="prefs-maxwin" name="prefs-maxwin" value="yes">
+                    <label for="prefs-maxwin">Maximize application window</label>
                 </td>
             </tr>
         </table>
     </div>
     <table>
         <tr>
-            <td style="width: 50%"><a class="dlg-button" onclick="app.dlg.close()">OK</a></td>
+            <td style="width: 50%"><a class="dlg-button" onclick="app.dlg.saveConfig()">OK</a></td>
             <td style="width: 50%"><a class="dlg-button not-first" onclick="app.dlg.close()">Cancel</a></td>
         </tr>
     </table>
