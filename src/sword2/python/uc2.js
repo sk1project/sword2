@@ -96,7 +96,7 @@ class UC2RpcClient {
 
 
 exports.init = function (app) {
-    exec("uc2 --package-dir", (error, stdout, stderr) => {
+    exec("uniconvertor --package-dir", (error, stdout, stderr) => {
         if (error) {
             console.log(`Error: ${error.message}`);
             return;

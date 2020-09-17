@@ -15,6 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+const fs = require('fs');
+const os = require('os');
+
 const {HtmlElement, el} = require('../widgets/base.js');
 const {wFileList} = require("../widgets/filelist.js");
 const {isRoot, isHome, parentDir, deleteFile} = require("../widgets/utils.js");
@@ -31,7 +34,7 @@ class FileBrowserPlugin extends HtmlElement {
         this.backward = [];
         this.forward = [];
         this.selectedItem = null;
-        this.currentDir = config.currentDir;
+        this.currentDir = fs.existsSync(config.currentDir) ? config.currentDir: os.homedir();
         this.build();
         this.updateCtrls();
     }
@@ -41,7 +44,7 @@ class FileBrowserPlugin extends HtmlElement {
             {
                 openCallback: this.open.bind(this),
                 selectCallback: this.selected.bind(this),
-                currentDir: config.currentDir,
+                currentDir: this.currentDir,
                 fileTypes: config.fileTypes,
             });
         this.backwardBtn = new wButton('fb-backward-button',
